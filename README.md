@@ -94,14 +94,34 @@ parameters.
 #### Using Hiera
 
 Hiera can be (should be!) used to change any of the default uwsgi parameters.
-See below for an example of not managing pip or python-dev. It also sets up
-some custom options within the emperor config file:
+
+Sets up some custom options within the emperor config file:
+
+```yaml
+---
+uwsgi::emperor_options:
+  vacuum: 'True'
+  reload-mercy: 8
+```
+
+Don't manage python or pip, and use apt-get to install uwsgi. Don't manage
+the service file, as it will be provided by the package itself:
 
 ```yaml
 ---
 uwsgi::install_pip: false
 uwsgi::install_python_dev: false
-uwsgi::emperor_options:
-  vacuum: 'True'
-  reload-mercy: 8
+uwsgi::package_provider: 'apt'
+uwsgi::manage_service_file: false
+```
+
+Remove uwsgi:
+
+```yaml
+---
+uwsgi::package_ensure: 'absent'
+uwsgi::service_ensure: false
+uwsgi::service_enable: false
+uwsgi::install_pip: false
+uwsgi::install_python_dev: false
 ```
