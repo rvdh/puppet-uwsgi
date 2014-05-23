@@ -1,6 +1,6 @@
 {
   "name": "engage-uwsgi",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "jarshwah <josh.smeaton@gmail.com>",
   "summary": "Install and configure uwsgi in Emperor mode",
   "license": "MIT",
