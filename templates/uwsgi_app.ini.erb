@@ -1,0 +1,18 @@
+#
+# This file is managed by puppet class 'uwsgi::app'
+#
+# uwsgi app config for '<%= @name %>'
+#
+[uwsgi]
+uid = <%= @uid %>
+gid = <%= @gid %>
+<%
+if @config
+  @config.sort.each do |key, value|
+-%>
+<%= key %> = <%= value%>
+<%
+  end
+end
+-%>
+

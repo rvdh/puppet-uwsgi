@@ -1,0 +1,23 @@
+#
+# This file is managed by puppet class 'uwsgi'
+#
+# uWSGI main process configuration
+#
+[uwsgi]
+socket = /run/uwsgi/uwsgi.socket
+pidfile = /run/uwsgi/uwsgi.pid
+emperor = <%= @app_config_dir %>
+emperor-tyrant = true
+master = true
+autoload = true
+log-date = true
+logto = /var/log/uwsgi/uwsgi-emperor.log
+<%
+if @emperor_options
+  @emperor_options.sort.each do |key, value|
+-%>
+<%= key %> = <%= value%>
+<%
+  end
+end
+-%>
