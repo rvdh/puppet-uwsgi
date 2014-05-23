@@ -1,0 +1,17 @@
+{
+  "name": "engage-uwsgi",
+  "version": "0.1.0",
+  "author": "jarshwah <josh.smeaton@gmail.com>",
+  "summary": "Install and configure uwsgi in Emperor mode",
+  "license": "MIT",
+  "source": "https://github.com/Engage/puppet-uwsgi",
+  "project_page": "https://github.com/Engage/puppet-uwsgi",
+  "issues_url": "https://github.com/Engage/puppet-uwsgi/issues",
+  "dependencies": [
+    {
+      "name": "puppetlabs-stdlib",
+      "version_range": ">= 1.0.0"
+    }
+  ]
+}
+
