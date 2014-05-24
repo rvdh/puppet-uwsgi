@@ -8,7 +8,8 @@ A puppet module for installing and managing uwsgi
 This module installs and configures [uWSGI](http://uwsgi-docs.readthedocs.org)
 in [Emperor mode](http://uwsgi-docs.readthedocs.org/en/latest/Emperor.html).
 
-It does not, currently, manage uwsgi applications (PRs welcome).
+It can also create and manage uwsgi applications that run under the emperor,
+which are best defined in hiera.
 
 Just about every option is configurable, so it should work on most distributions
 by putting together a hiera file.
@@ -29,6 +30,9 @@ parameters.
 * `package_ensure`
    Package state.
    Default: 'installed'
+
+   If 'absent' or 'purged', then remove the `service_file` and `config_file`
+   also
 
 * `package_provider`
    The provider to use to install the package.
@@ -97,8 +101,6 @@ parameters.
 
 #### Using Hiera
 
-Hiera can be (should be!) used to change any of the default uwsgi parameters.
-
 Sets up some custom options within the emperor config file:
 
 ```yaml
@@ -128,4 +130,86 @@ uwsgi::service_ensure: false
 uwsgi::service_enable: false
 uwsgi::install_pip: false
 uwsgi::install_python_dev: false
+```
+
+## Defined Types
+
+### uwsgi::app
+
+Responsible for creating uwsgi applications that run under the uwsgi emperor.
+You shouldn't need to use this type directly, as the `uwsgi` class will
+automatically create all applications defined in hiera under the uwsgi::app
+key. See the hiera section below for examples.
+
+#### Parameters
+
+* `ensure`
+   Ensure the config file exists. Default: 'present'
+
+* `template`
+   The template used to construct the config file.
+   Default: 'uwsgi/uwsgi_app.ini.erb'
+
+* `uid`
+   The user to run the application as. Required.
+   May be the user name, not just the id.
+
+* `gid`
+   The group to run the application as. Required.
+   May be the group name, not just the id.
+
+* `application_options`
+   Extra options to set in the application config file
+
+#### Using Hiera
+
+Configure a django application:
+
+```yaml
+---
+uwsgi::app:
+  django:
+    ensure: 'present'
+    uid: 'django'
+    gid: 'django'
+    application_options:
+      chdir: '/path/to/project'
+      module: 'mysite.wsgi:application'
+      socket: '/tmp/uwsgi_django.sock'
+      master: 'True'
+      vaccum: 'True'
+      max-requests: '5000'
+      buffer-size: '32768'
+      processes: 4
+      threads: 8
+```
+
+Configure multiple applications (all yaml files are aggregated using
+`hiera_hash`):
+
+```yaml
+# common.yaml
+---
+uwsgi::app:
+  django_1:
+    ensure: 'present'
+    uid: 'django'
+    gid: 'django'
+    application_options:
+      chdir: '/path/to/project'
+      module: 'mysite.wsgi:application'
+      socket: '/tmp/uwsgi_django.sock'
+
+
+# role_app_server.yaml
+---
+uwsgi::app:
+  django_2:
+    ensure: 'present'
+    uid: 'django'
+    gid: 'django'
+    application_options:
+      chdir: '/path/to/project2'
+      module: 'mysite.wsgi:application'
+      socket: '/tmp/uwsgi_django2.sock'
 ```

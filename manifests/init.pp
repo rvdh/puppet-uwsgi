@@ -13,6 +13,9 @@
 # [*package_ensure*]
 #    Package state. Default: 'installed'
 #
+#    If 'absent' or 'purged', then remove the `service_file` and `config_file`
+#    also
+#
 # [*package_provider*]
 #    The provider to use to install the package. Default: 'pip'
 #
@@ -108,8 +111,15 @@ class uwsgi (
         provider => $package_provider
     }
 
+    # remove config files if package is purged
+    $file_ensure = $package_ensure ? {
+        'absent' => 'absent',
+        'purged' => 'absent',
+        default  => 'present'
+    }
+
     file { $config_file:
-        ensure  => 'present',
+        ensure  => $file_ensure,
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
@@ -118,13 +128,21 @@ class uwsgi (
     }
 
     file { $service_file:
-        ensure   => 'present',
+        ensure   => $file_ensure,
         owner    => 'root',
         group    => 'root',
         mode     => '0644',
         replace  => $manage_service_file,
         content  => template($service_template),
         require  => Package[$package_name]
+    }
+
+    file { $app_directory:
+        ensure  => 'directory',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package[$package_name]
     }
 
     service { $service_name:
@@ -143,4 +161,8 @@ class uwsgi (
             File[$service_file]
             ]
     }
+
+    # finally, configure any applications necessary
+    $applications = hiera_hash('uwsgi::app', {})
+    create_resources('uwsgi::app', $applications)
 }

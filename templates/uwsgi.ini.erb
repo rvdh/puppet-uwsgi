@@ -6,7 +6,7 @@
 [uwsgi]
 socket = /run/uwsgi/uwsgi.socket
 pidfile = /run/uwsgi/uwsgi.pid
-emperor = <%= @app_config_dir %>
+emperor = <%= @app_directory %>
 emperor-tyrant = true
 master = true
 autoload = true
