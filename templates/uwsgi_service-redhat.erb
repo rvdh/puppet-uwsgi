@@ -19,8 +19,23 @@
 . /etc/rc.d/init.d/functions
 
 OPTIONS="--daemonize --die-on-term --ini <%= @config_file %>"
+UWSGIPID="<%= @pidfile %>"
+UWSGISOCKET="<%= @socket %>"
+
+UWSGIPIDDIR="${UWSGIPID%/*}"
+UWSGISOCKETDIR="${UWSGISOCKET%/*}"
 
 [ -f /etc/sysconfig/uwsgi ] && . /etc/sysconfig/uwsgi
+
+if [ ! -d "${UWSGIPIDDIR}" ]; then
+	mkdir -p "${UWSGIPIDDIR}"
+	[ -n "${RUNAS}" ] && chown "${RUNAS}:" "${UWSGIPIDDIR}"
+fi
+
+if [ ! -d "${UWSGISOCKETDIR}" ]; then
+	mkdir -p "${UWSGISOCKETDIR}"
+	[ -n "${RUNAS}" ] && chown "${RUNAS}:" "${UWSGISOCKETDIR}"
+fi
 
 RETVAL=0
 prog=uwsgi

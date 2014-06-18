@@ -4,8 +4,8 @@
 # uWSGI main process configuration
 #
 [uwsgi]
-socket = /run/uwsgi/uwsgi.socket
-pidfile = /run/uwsgi/uwsgi.pid
+socket = <%= @socket %>
+pidfile = <%= @pidfile %>
 emperor = <%= @app_directory %>
 emperor-tyrant = true
 master = true
