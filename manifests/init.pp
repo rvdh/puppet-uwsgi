@@ -80,9 +80,9 @@ class uwsgi (
     $package_ensure      = $uwsgi::params::package_ensure,
     $package_provider    = $uwsgi::params::package_provider,
     $service_name        = $uwsgi::params::service_name,
-    $service_file        = $uwsgi::params::service_file,
-    $service_file_mode   = $uwsgi::params::service_file_mode,
-    $service_template    = $uwsgi::params::service_template,
+    $service_file        = undef,
+    $service_file_mode   = undef,
+    $service_template    = undef,
     $service_ensure      = $uwsgi::params::service_ensure,
     $service_enable      = $uwsgi::params::service_enable,
     $service_provider    = $uwsgi::params::service_provider,
@@ -131,13 +131,40 @@ class uwsgi (
         require => Package[$package_name]
     }
 
-    file { $service_file:
+    if $service_file == undef {
+        $service_file_real = $service_provider ? {
+            redhat  => '/etc/init.d/uwsgi',
+            upstart => '/etc/init/uwsgi.conf',
+        }
+    } else {
+        $service_file_real = $service_file
+    }
+
+    if $service_file_mode == undef {
+        $service_file_mode_real = $service_provider ? {
+            redhat  => '0555',
+            upstart => '0644',
+        }
+    } else {
+        $service_file_mode_real = $service_file_mode
+    }
+
+    if $service_template == undef {
+        $service_template_real = $service_provider ? {
+            redhat  => 'uwsgi/uwsgi_service-redhat.erb',
+            upstart => 'uwsgi/uwsgi_upstart.conf.erb',
+        }
+    } else {
+        $service_template_real = $service_template
+    }
+
+    file { $service_file_real:
         ensure   => $file_ensure,
         owner    => 'root',
         group    => 'root',
-        mode     => $service_file_mode,
+        mode     => $service_file_mode_real,
         replace  => $manage_service_file,
-        content  => template($service_template),
+        content  => template($service_template_real),
         require  => Package[$package_name]
     }
 
@@ -158,11 +185,11 @@ class uwsgi (
         require    => [
             Package[$package_name],
             File[$config_file],
-            File[$service_file]
+            File[$service_file_real]
             ],
         subscribe  => [
             File[$config_file],
-            File[$service_file]
+            File[$service_file_real]
             ]
     }
 

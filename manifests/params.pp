@@ -10,9 +10,6 @@ class uwsgi::params {
     $package_ensure      = 'installed'
     $package_provider    = 'pip'
     $service_name        = 'uwsgi'
-    $service_file        = '/etc/init/uwsgi.conf'
-    $service_file_mode   = '0644'
-    $service_template    = 'uwsgi/uwsgi_upstart.conf.erb'
     $service_ensure      = true
     $service_enable      = true
     $service_provider    = 'upstart'
