@@ -17,6 +17,7 @@ class uwsgi::params {
     $config_file         = '/etc/uwsgi.ini'
     $install_pip         = true
     $install_python_dev  = true
+    $log_file            = '/var/log/uwsgi/uwsgi-emperor.log'
     $python_pip          = 'python-pip'
 
     case $::osfamily {
