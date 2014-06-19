@@ -10,7 +10,12 @@ stop on runlevel [!2345]
 respawn
 
 pre-start script
-    mkdir -p /run/uwsgi
+    uwsgipid="<%= @pidfile %>"
+    uwsgisocket="<%= @socket %>"
+    uwsgipiddir="${uwsgipid%/*}"
+    uwsgisocketdir="${uwsgisocket%/*}"
+    mkdir -p "$uwsgipiddir"
+    mkdir -p "$uwsgisocketdir"
     mkdir -p /var/log/uwsgi
 end script
 exec uwsgi --die-on-term --ini <%= @config_file %>

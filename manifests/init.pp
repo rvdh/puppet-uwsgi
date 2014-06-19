@@ -135,6 +135,7 @@ class uwsgi (
         $service_file_real = $service_provider ? {
             redhat  => '/etc/init.d/uwsgi',
             upstart => '/etc/init/uwsgi.conf',
+            default => '/etc/init/uwsgi.conf',
         }
     } else {
         $service_file_real = $service_file
@@ -144,6 +145,7 @@ class uwsgi (
         $service_file_mode_real = $service_provider ? {
             redhat  => '0555',
             upstart => '0644',
+            default => '0644',
         }
     } else {
         $service_file_mode_real = $service_file_mode
@@ -153,6 +155,7 @@ class uwsgi (
         $service_template_real = $service_provider ? {
             redhat  => 'uwsgi/uwsgi_service-redhat.erb',
             upstart => 'uwsgi/uwsgi_upstart.conf.erb',
+            default => 'uwsgi/uwsgi_upstart.conf.erb',
         }
     } else {
         $service_template_real = $service_template
