@@ -10,8 +10,6 @@ class uwsgi::params {
     $package_ensure      = 'installed'
     $package_provider    = 'pip'
     $service_name        = 'uwsgi'
-    $service_file        = '/etc/init/uwsgi.conf'
-    $service_template    = 'uwsgi/uwsgi_upstart.conf.erb'
     $service_ensure      = true
     $service_enable      = true
     $service_provider    = 'upstart'
@@ -24,11 +22,15 @@ class uwsgi::params {
     case $::osfamily {
         redhat: {
             $app_directory = '/etc/uwsgi.d'
+            $pidfile       = '/var/run/uwsgi/uwsgi.pid'
             $python_dev    = 'python-devel'
+            $socket        = '/var/run/uwsgi/uwsgi.socket'
         }
         default: {
             $app_directory = '/etc/uwsgi/apps-enabled'
+            $pidfile       = '/run/uwsgi/uwsgi.pid'
             $python_dev    = 'python-dev'
+            $socket        = '/run/uwsgi/uwsgi.socket'
         }
     }
 }
