@@ -19,7 +19,8 @@ by putting together a hiera file.
 ### uwsgi
 
 The main entry point. Simply ``include uwsgi`` to accept all the default
-parameters.
+parameters. The service file template will, by default, auto-configure itself for
+redhat init.d or upstart depending on the service provider.
 
 #### Parameters
 
@@ -63,7 +64,9 @@ parameters.
    Default: 'upstart'
 
    `upstart` is required for the default `service_file`, and
-   works on RedHat >= 6
+   works on RedHat >= 6. Setting `service_provider` to `redhat`
+   will now deploy the init.d service file, unless you specifically
+   set `service_template` etc.
 
 * `manage_service_file`
    Whether to override the system service file if it exists.
