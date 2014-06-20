@@ -1,7 +1,12 @@
-2014-06-20 - Josh Smeaton <josh.smeaton@gmail.com> - 1.0.1
+1.0.1 - 2014-06-20
+------------------
 * emperor log directory can now be changed
-2014-06-19 - Josh Smeaton <josh.smeaton@gmail.com> - 1.0.0
+
+1.0.0 - 2014-06-19
+------------------
 * Added init.d service template
 * Auto-configure template based on service provider
-2014-05-24 - Josh Smeaton <josh.smeaton@gmail.com> - 0.9.0
+
+0.9.0 - 2014-05-24
+------------------
 * Added support for uwsgi vassal creation
