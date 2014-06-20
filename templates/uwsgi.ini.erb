@@ -11,7 +11,7 @@ emperor-tyrant = true
 master = true
 autoload = true
 log-date = true
-logto = /var/log/uwsgi/uwsgi-emperor.log
+logto = <%= @log_file %>
 <%
 if @emperor_options
   @emperor_options.sort.each do |key, value|

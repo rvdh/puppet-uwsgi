@@ -49,6 +49,10 @@
 # [*config_file*]
 #    The location of the uwsgi config file. Default: '/etc/uwsgi.ini'
 #
+# [*log_file*]
+#    The location of the uwsgi emperor log.
+#    Default: '/var/log/uwsgi/uwsgi-emperor.log'
+#
 # [*app_directory*]
 #    Vassal directory for application config files
 #
@@ -88,6 +92,7 @@ class uwsgi (
     $service_provider    = $uwsgi::params::service_provider,
     $manage_service_file = $uwsgi::params::manage_service_file,
     $config_file         = $uwsgi::params::config_file,
+    $log_file            = $uwsgi::params::log_file,
     $app_directory       = $uwsgi::params::app_directory,
     $install_pip         = $uwsgi::params::install_pip,
     $install_python_dev  = $uwsgi::params::install_python_dev,

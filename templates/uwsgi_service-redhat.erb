@@ -18,14 +18,22 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-OPTIONS="--daemonize --die-on-term --ini <%= @config_file %>"
+UWSGILOG="<%= @log_file %>"
 UWSGIPID="<%= @pidfile %>"
 UWSGISOCKET="<%= @socket %>"
 
+OPTIONS="--daemonize "${UWSGILOG}" --die-on-term --ini <%= @config_file %>"
+
+UWSGILOGDIR="${UWSGILOG%/*}"
 UWSGIPIDDIR="${UWSGIPID%/*}"
 UWSGISOCKETDIR="${UWSGISOCKET%/*}"
 
 [ -f /etc/sysconfig/uwsgi ] && . /etc/sysconfig/uwsgi
+
+if [ ! -d "${UWSGILOGDIR}" ]; then
+	mkdir -p "${UWSGILOGDIR}"
+	[ -n "${RUNAS}" ] && chown "${RUNAS}:" "${UWSGILOGDIR}"
+fi
 
 if [ ! -d "${UWSGIPIDDIR}" ]; then
 	mkdir -p "${UWSGIPIDDIR}"

@@ -76,6 +76,10 @@ redhat init.d or upstart depending on the service provider.
    The location of the uwsgi config file.
    Default: '/etc/uwsgi.ini'
 
+* `log_dir`
+   The location of the uwsgi emperor log.
+   Default: '/var/log/uwsgi/uwsgi-emperor.log'
+
 * `app_directory`
    Vassal directory for application config files.
 
