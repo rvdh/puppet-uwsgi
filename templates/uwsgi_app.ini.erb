@@ -14,5 +14,12 @@ if @application_options
 <%
   end
 end
--%>
 
+if @environment_variables
+  @environment_variables.sort.each do |key, value|
+-%>
+env = <%= key %>=<%= value %>
+<%
+  end
+end
+-%>

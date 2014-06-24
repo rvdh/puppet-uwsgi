@@ -23,13 +23,17 @@
 # [*application_options*]
 #    Extra options to set in the application config file
 #
+# [*environment_variables*]
+#    Extra environment variables to set in the application config file
+#
 # === Authors
 # - Josh Smeaton <josh.smeaton@gmail.com>
 #
 define uwsgi::app (
-    $ensure              = 'present',
-    $template            = 'uwsgi/uwsgi_app.ini.erb',
-    $application_options = undef,
+    $ensure                = 'present',
+    $template              = 'uwsgi/uwsgi_app.ini.erb',
+    $application_options   = undef,
+    $environment_variables = undef,
     $uid,
     $gid
 ) {

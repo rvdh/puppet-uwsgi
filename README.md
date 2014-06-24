@@ -168,6 +168,9 @@ key. See the hiera section below for examples.
 * `application_options`
    Extra options to set in the application config file
 
+* `environment_variables`
+   Extra environment variabls to set in the application config file
+
 #### Using Hiera
 
 Configure a django application:
