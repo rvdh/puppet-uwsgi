@@ -13,7 +13,7 @@ pre-start script
     uwsgilog="<%= @log_file %>"
     uwsgipid="<%= @pidfile %>"
     uwsgisocket="<%= @socket %>"
-    uwsgilogddir="${uwsgilogd%/*}"
+    uwsgilogdir="${uwsgilog%/*}"
     uwsgipiddir="${uwsgipid%/*}"
     uwsgisocketdir="${uwsgisocket%/*}"
     mkdir -p "$uwsgipiddir"
