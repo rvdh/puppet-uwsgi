@@ -9,9 +9,17 @@ gid = <%= @gid %>
 <%
 if @application_options
   @application_options.sort.each do |key, value|
+    if value.is_a? Array
+      value.each do |v|
+-%>
+<%= key %> = <%= v%>
+<%
+      end
+    else
 -%>
 <%= key %> = <%= value%>
 <%
+    end
   end
 end
 
