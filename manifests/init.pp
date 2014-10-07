@@ -139,6 +139,7 @@ class uwsgi (
     if $service_file == undef {
         $service_file_real = $service_provider ? {
             redhat  => '/etc/init.d/uwsgi',
+            debian  => '/etc/init.d/uwsgi',
             upstart => '/etc/init/uwsgi.conf',
             default => '/etc/init/uwsgi.conf',
         }
@@ -159,6 +160,7 @@ class uwsgi (
     if $service_template == undef {
         $service_template_real = $service_provider ? {
             redhat  => 'uwsgi/uwsgi_service-redhat.erb',
+            debian  => 'uwsgi/uwsgi_service-debian.erb',
             upstart => 'uwsgi/uwsgi_upstart.conf.erb',
             default => 'uwsgi/uwsgi_upstart.conf.erb',
         }
