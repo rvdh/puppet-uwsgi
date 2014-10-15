@@ -38,9 +38,10 @@ NAME="uwsgi"
 DAEMON="/usr/local/bin/uwsgi"
 SCRIPTNAME="/etc/init.d/${NAME}"
 
-UWSGI_CONFDIR="<%= @app_directoty %>"
+UWSGI_CONFDIR="<%= @app_directory %>"
 
 PIDFILE="<%= @pidfile %>"
+EMPEROR_PIDFILE="<%= @emperor_pidfile %>"
 UWSGI_RUNDIR="${PIDFILE%/*}"
 UWSGI_LOGDIR="<%= @log_file %>%/*"
 
@@ -121,25 +122,7 @@ do_reload()
 {
     start-stop-daemon --stop --quiet \
         --signal=HUP \
-        --pidfile "$PIDFILE" \
-        --name "$NAME"
-
-    RETVAL="$?"
-
-    # There is no such process, nothing to reload!
-    [ "$RETVAL" = 1 ] && RETVAL=3
-
-    return "$RETVAL"
-}
-
-# Return:
-#  0 if daemon has been reloaded
-#  3 if daemon could not be reloaded
-do_force_reload()
-{
-    start-stop-daemon --stop --quiet \
-        --signal=TERM \
-        --pidfile "$PIDFILE" \
+        --pidfile "$EMPEROR_PIDFILE" \
         --name "$NAME"
 
     RETVAL="$?"
@@ -179,13 +162,6 @@ case "$WHAT" in
         log_end_msg "$RETVAL"
     ;;
 
-    force-reload)
-        log_daemon_msg "Forced reloading $DESC" "$NAME"
-        do_"$WHAT"
-        RETVAL="$?"
-        log_end_msg "$RETVAL"
-    ;;
-
     restart)
         log_daemon_msg "Restarting $DESC" "$NAME"
         do_stop
@@ -203,7 +179,7 @@ case "$WHAT" in
       ;;
 
     *)
-        echo "Usage: $SCRIPTNAME {start|stop|status|restart|reload|force-reload}" >&2
+        echo "Usage: $SCRIPTNAME {start|stop|status|restart|reload}" >&2
         exit 3
     ;;
 esac

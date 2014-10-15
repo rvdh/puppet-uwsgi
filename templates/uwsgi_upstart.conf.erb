@@ -20,4 +20,4 @@ pre-start script
     mkdir -p "$uwsgisocketdir"
     mkdir -p "$uwsgilogdir"
 end script
-exec uwsgi --die-on-term --ini <%= @config_file %>
+exec uwsgi --ini <%= @config_file %>

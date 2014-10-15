@@ -150,6 +150,7 @@ class uwsgi (
     if $service_file_mode == undef {
         $service_file_mode_real = $service_provider ? {
             redhat  => '0555',
+            debian  => '0755',
             upstart => '0644',
             default => '0644',
         }
