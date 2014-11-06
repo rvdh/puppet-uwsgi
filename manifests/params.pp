@@ -27,13 +27,6 @@ class uwsgi::params {
             $python_dev    = 'python-devel'
             $socket        = '/var/run/uwsgi/uwsgi.socket'
         }
-        Debian: {
-            $app_directory      = '/etc/uwsgi/apps-enabled'
-            $pidfile            = '/var/run/uwsgi/uwsgi.pid'
-            $emperor_pidfile    = '/var/run/uwsgi/emperor.pid'
-            $python_dev         = 'python-dev'
-            $socket             = '/var/run/uwsgi/uwsgi.socket'
-        }
         default: {
             $app_directory = '/etc/uwsgi/apps-enabled'
             $pidfile       = '/run/uwsgi/uwsgi.pid'
