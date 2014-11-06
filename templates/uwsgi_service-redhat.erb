@@ -22,7 +22,7 @@ UWSGILOG="<%= @log_file %>"
 UWSGIPID="<%= @pidfile %>"
 UWSGISOCKET="<%= @socket %>"
 
-OPTIONS="--ini <%= @config_file %>"
+OPTIONS="--daemonize "${UWSGILOG}" --die-on-term --ini <%= @config_file %>"
 
 UWSGILOGDIR="${UWSGILOG%/*}"
 UWSGIPIDDIR="${UWSGIPID%/*}"
