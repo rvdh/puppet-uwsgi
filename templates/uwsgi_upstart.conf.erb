@@ -5,7 +5,7 @@
 #
 description "uWSGI Emperor"
 start on runlevel [2345]
-stop on runlevel [!2345]
+stop on runlevel [06]
 
 respawn
 
@@ -13,11 +13,13 @@ pre-start script
     uwsgilog="<%= @log_file %>"
     uwsgipid="<%= @pidfile %>"
     uwsgisocket="<%= @socket %>"
+    uwsgiappdir="<%= @app_directory %>"
     uwsgilogdir="${uwsgilog%/*}"
     uwsgipiddir="${uwsgipid%/*}"
     uwsgisocketdir="${uwsgisocket%/*}"
     mkdir -p "$uwsgipiddir"
     mkdir -p "$uwsgisocketdir"
     mkdir -p "$uwsgilogdir"
+    mkdir -p "$uwsgiappdir"
 end script
 exec uwsgi --ini <%= @config_file %>

@@ -7,13 +7,15 @@
 socket = <%= @socket %>
 pidfile = <%= @pidfile %>
 emperor = <%= @app_directory %>
-emperor-pidfile = <%= @emperor_pidfile %>
 emperor-tyrant = true
-die-on-term = true
+master = true
+no-orphans = true
 autoload = true
 log-date = true
 logto = <%= @log_file %>
+<% if @service_provider != "upstart" %>
 daemonize = <%= @log_file %>
+<% end %>
 <%
 if @emperor_options
   @emperor_options.sort.each do |key, value|

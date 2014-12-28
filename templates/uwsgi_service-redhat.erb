@@ -27,6 +27,7 @@ OPTIONS="--ini <%= @config_file %>"
 UWSGILOGDIR="${UWSGILOG%/*}"
 UWSGIPIDDIR="${UWSGIPID%/*}"
 UWSGISOCKETDIR="${UWSGISOCKET%/*}"
+UWSGICONFDIR="<%= @app_directory %>"
 
 [ -f /etc/sysconfig/uwsgi ] && . /etc/sysconfig/uwsgi
 
@@ -43,6 +44,11 @@ fi
 if [ ! -d "${UWSGISOCKETDIR}" ]; then
 	mkdir -p "${UWSGISOCKETDIR}"
 	[ -n "${RUNAS}" ] && chown "${RUNAS}:" "${UWSGISOCKETDIR}"
+fi
+
+if [ ! -d "${UWSGICONFDIR}" ]; then
+	mkdir -p "${UWSGICONFDIR}"
+	[ -n "${RUNAS}" ] && chown "${RUNAS}:" "${UWSGICONFDIR}"
 fi
 
 RETVAL=0

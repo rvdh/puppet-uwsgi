@@ -12,33 +12,24 @@ class uwsgi::params {
     $service_name        = 'uwsgi'
     $service_ensure      = true
     $service_enable      = true
-    $service_provider    = 'upstart'
     $manage_service_file = true
+    $service_provider    = 'upstart'
     $config_file         = '/etc/uwsgi.ini'
     $install_pip         = true
     $install_python_dev  = true
     $log_file            = '/var/log/uwsgi/uwsgi-emperor.log'
     $python_pip          = 'python-pip'
+    $pidfile             = '/var/run/uwsgi/uwsgi.pid'
+    $socket              = '/var/run/uwsgi/uwsgi.socket'
 
     case $::osfamily {
         redhat: {
             $app_directory = '/etc/uwsgi.d'
-            $pidfile       = '/var/run/uwsgi/uwsgi.pid'
             $python_dev    = 'python-devel'
-            $socket        = '/var/run/uwsgi/uwsgi.socket'
-        }
-        Debian: {
-            $app_directory      = '/etc/uwsgi/apps-enabled'
-            $pidfile            = '/var/run/uwsgi/uwsgi.pid'
-            $emperor_pidfile    = '/var/run/uwsgi/emperor.pid'
-            $python_dev         = 'python-dev'
-            $socket             = '/var/run/uwsgi/uwsgi.socket'
         }
         default: {
             $app_directory = '/etc/uwsgi/apps-enabled'
-            $pidfile       = '/run/uwsgi/uwsgi.pid'
             $python_dev    = 'python-dev'
-            $socket        = '/run/uwsgi/uwsgi.socket'
         }
     }
 }

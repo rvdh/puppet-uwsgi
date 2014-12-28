@@ -40,7 +40,6 @@ SCRIPTNAME="/etc/init.d/${NAME}"
 UWSGI_CONFDIR="<%= @app_directory %>"
 
 PIDFILE="<%= @pidfile %>"
-EMPEROR_PIDFILE="<%= @emperor_pidfile %>"
 UWSGI_RUNDIR="${PIDFILE%/*}"
 UWSGI_LOGDIR="<%= @log_file %>%/*"
 
@@ -121,7 +120,7 @@ do_reload()
 {
     start-stop-daemon --stop --quiet \
         --signal=HUP \
-        --pidfile "$EMPEROR_PIDFILE" \
+        --pidfile "$PIDFILE" \
         --name "$NAME"
 
     RETVAL="$?"

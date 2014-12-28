@@ -138,21 +138,17 @@ class uwsgi (
 
     if $service_file == undef {
         $service_file_real = $service_provider ? {
-            redhat  => '/etc/init.d/uwsgi',
-            debian  => '/etc/init.d/uwsgi',
             upstart => '/etc/init/uwsgi.conf',
-            default => '/etc/init/uwsgi.conf',
+            default => '/etc/init.d/uwsgi',
         }
     } else {
         $service_file_real = $service_file
     }
 
     if $service_file_mode == undef {
-        $service_file_mode_real = $service_provider ? {
+        $service_file_mode_real = $::osfamily ? {
             redhat  => '0555',
-            debian  => '0755',
-            upstart => '0644',
-            default => '0644',
+            default => '0544'
         }
     } else {
         $service_file_mode_real = $service_file_mode
@@ -162,7 +158,6 @@ class uwsgi (
         $service_template_real = $service_provider ? {
             redhat  => 'uwsgi/uwsgi_service-redhat.erb',
             debian  => 'uwsgi/uwsgi_service-debian.erb',
-            upstart => 'uwsgi/uwsgi_upstart.conf.erb',
             default => 'uwsgi/uwsgi_upstart.conf.erb',
         }
     } else {
@@ -179,20 +174,12 @@ class uwsgi (
         require  => Package[$package_name]
     }
 
-    file { $app_directory:
-        ensure  => 'directory',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        require => Package[$package_name]
-    }
-
     service { $service_name:
         ensure     => $service_ensure,
         enable     => $service_enable,
+        provider   => $service_provider,
         hasrestart => true,
         hasstatus  => true,
-        provider   => $service_provider,
         require    => [
             Package[$package_name],
             File[$config_file],
