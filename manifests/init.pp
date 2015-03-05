@@ -98,6 +98,8 @@ class uwsgi (
     $install_python_dev  = $uwsgi::params::install_python_dev,
     $python_pip          = $uwsgi::params::python_pip,
     $python_dev          = $uwsgi::params::python_dev,
+    $pidfile             = $uwsgi::params::pidfile,
+    $socket              = $uwsgi::params::socket,
     $emperor_options     = undef
 ) inherits uwsgi::params {
 
@@ -136,44 +138,49 @@ class uwsgi (
         require => Package[$package_name]
     }
 
-    if $service_file == undef {
-        $service_file_real = $service_provider ? {
-            redhat  => '/etc/init.d/uwsgi',
-            upstart => '/etc/init/uwsgi.conf',
-            default => '/etc/init/uwsgi.conf',
-        }
-    } else {
-        $service_file_real = $service_file
-    }
+    if $manage_service_file == true {
+      if $service_file == undef {
+          $service_file_real = $service_provider ? {
+              redhat  => '/etc/init.d/uwsgi',
+              upstart => '/etc/init/uwsgi.conf',
+              default => '/etc/init/uwsgi.conf',
+          }
+      } else {
+          $service_file_real = $service_file
+      }
 
-    if $service_file_mode == undef {
-        $service_file_mode_real = $service_provider ? {
-            redhat  => '0555',
-            upstart => '0644',
-            default => '0644',
-        }
-    } else {
-        $service_file_mode_real = $service_file_mode
-    }
+      if $service_file_mode == undef {
+          $service_file_mode_real = $service_provider ? {
+              redhat  => '0555',
+              upstart => '0644',
+              default => '0644',
+          }
+      } else {
+          $service_file_mode_real = $service_file_mode
+      }
 
-    if $service_template == undef {
-        $service_template_real = $service_provider ? {
-            redhat  => 'uwsgi/uwsgi_service-redhat.erb',
-            upstart => 'uwsgi/uwsgi_upstart.conf.erb',
-            default => 'uwsgi/uwsgi_upstart.conf.erb',
-        }
-    } else {
-        $service_template_real = $service_template
-    }
+      if $service_template == undef {
+          $service_template_real = $service_provider ? {
+              redhat  => 'uwsgi/uwsgi_service-redhat.erb',
+              upstart => 'uwsgi/uwsgi_upstart.conf.erb',
+              default => 'uwsgi/uwsgi_upstart.conf.erb',
+          }
+      } else {
+          $service_template_real = $service_template
+      }
 
-    file { $service_file_real:
-        ensure   => $file_ensure,
-        owner    => 'root',
-        group    => 'root',
-        mode     => $service_file_mode_real,
-        replace  => $manage_service_file,
-        content  => template($service_template_real),
-        require  => Package[$package_name]
+      file { $service_file_real:
+          ensure   => $file_ensure,
+          owner    => 'root',
+          group    => 'root',
+          mode     => $service_file_mode_real,
+          replace  => $manage_service_file,
+          content  => template($service_template_real),
+          require  => Package[$package_name]
+      }
+      $required_files = [ $config_file, $service_file_real ]
+    } else {
+      $required_files = $config_file
     }
 
     file { $app_directory:
@@ -192,13 +199,9 @@ class uwsgi (
         provider   => $service_provider,
         require    => [
             Package[$package_name],
-            File[$config_file],
-            File[$service_file_real]
+            File[$required_files]
             ],
-        subscribe  => [
-            File[$config_file],
-            File[$service_file_real]
-            ]
+        subscribe  => File[$required_files]
     }
 
     # finally, configure any applications necessary
