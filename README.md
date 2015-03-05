@@ -223,3 +223,31 @@ uwsgi::app:
       module: 'mysite.wsgi:application'
       socket: '/tmp/uwsgi_django2.sock'
 ```
+
+Example using hiera to use Debian Jessie APT packages & default file locations
+
+```yaml
+---
+classes:
+  - uwsgi
+uwsgi::package_name:
+  - 'uwsgi-emperor'
+  - 'uwsgi-plugins-all'
+uwsgi::package_provider: 'apt'
+uwsgi::service_name: 'uwsgi-emperor'
+uwsgi::service_provider: 'debian'
+uwsgi::manage_service_file: false
+uwsgi::config_file: '/etc/uwsgi-emperor/emperor.ini'
+uwsgi::log_dir: '/var/log/uwsgi/emperor.log'
+uwsgi::app_directory: '/etc/uwsgi-emperor/vassals'
+uwsgi::install_pip: false
+uwsgi::install_python_dev: false
+uwsgi::socket: undef
+uwsgi::pidfile: '/run/uwsgi-emperor.pid'
+uwsgi::emperor_options:
+  uid: 'www-data'
+  gid: 'www-data'
+  workers: '2'
+  no-orphans: 'true'
+```
+
