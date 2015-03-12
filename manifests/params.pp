@@ -15,6 +15,7 @@ class uwsgi::params {
     $service_provider    = 'upstart'
     $manage_service_file = true
     $config_file         = '/etc/uwsgi.ini'
+    $tyrant              = true
     $install_pip         = true
     $install_python_dev  = true
     $log_file            = '/var/log/uwsgi/uwsgi-emperor.log'
