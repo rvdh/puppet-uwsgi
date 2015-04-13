@@ -80,6 +80,11 @@ redhat init.d or upstart depending on the service provider.
    The location of the uwsgi emperor log.
    Default: '/var/log/uwsgi/uwsgi-emperor.log'
 
+* `log_rotate`
+   Whether or not to deploy a logrotate script.
+   Accepts: 'yes', 'no', 'purge'
+   Default: 'no'
+
 * `app_directory`
    Vassal directory for application config files.
 

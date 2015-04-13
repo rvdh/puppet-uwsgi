@@ -1,6 +1,7 @@
 1.3.0 - 2015-04-?
 ------------------
 * Made tyrant mode configurable
+* Optionally deploy logrotate configuration
 
 1.2.0 - 2014-08-20
 ------------------

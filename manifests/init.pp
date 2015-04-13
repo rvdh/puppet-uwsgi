@@ -53,6 +53,11 @@
 #    The location of the uwsgi emperor log.
 #    Default: '/var/log/uwsgi/uwsgi-emperor.log'
 #
+# [*log_rotate]
+#    Whether or not to deploy a logrotate script.
+#    Accepts: 'yes', 'no', 'purge'
+#    Default: 'no'
+#
 # [*app_directory*]
 #    Vassal directory for application config files
 #
@@ -97,6 +102,7 @@ class uwsgi (
     $manage_service_file = $uwsgi::params::manage_service_file,
     $config_file         = $uwsgi::params::config_file,
     $log_file            = $uwsgi::params::log_file,
+    $log_rotate          = $uwsgi::params::log_rotate,
     $app_directory       = $uwsgi::params::app_directory,
     $tyrant              = $uwsgi::params::tyrant,
     $install_pip         = $uwsgi::params::install_pip,
@@ -107,6 +113,8 @@ class uwsgi (
     $socket              = $uwsgi::params::socket,
     $emperor_options     = undef
 ) inherits uwsgi::params {
+
+    validate_re($log_rotate, '^yes$|^no$|^purge$')
 
     if ! defined(Package[$python_dev]) and $install_python_dev {
         package { $python_dev:
@@ -207,6 +215,23 @@ class uwsgi (
             File[$required_files]
             ],
         subscribe  => File[$required_files]
+    }
+
+    case $log_rotate {
+        'yes': {
+            file { '/etc/logrotate.d/uwsgi':
+                ensure  => 'file',
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0644',
+                content => template('uwsgi/uwsgi_logrotate.erb'),
+            }
+        }
+        'absent', 'purge', 'purged': {
+            file { '/etc/logrotate.d/uwsgi':
+                ensure  => 'absent',
+            }
+        }
     }
 
     # finally, configure any applications necessary
