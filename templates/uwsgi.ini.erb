@@ -4,14 +4,18 @@
 # uWSGI main process configuration
 #
 [uwsgi]
+<% if @socket -%>
 socket = <%= @socket %>
+<% end -%>
 pidfile = <%= @pidfile %>
 emperor = <%= @app_directory %>
 emperor-tyrant = <%= @tyrant %>
 master = true
 autoload = true
 log-date = true
+<% if @log_file -%>
 logto = <%= @log_file %>
+<% end -%>
 <%
 if @emperor_options
   @emperor_options.sort.each do |key, value|
