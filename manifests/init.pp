@@ -56,6 +56,10 @@
 # [*app_directory*]
 #    Vassal directory for application config files
 #
+# [*tyrant*]
+#   Whether to run the emperor in tyrant mode
+#   Default: true
+#
 # [*install_pip*]
 #    Install pip if it's not already installed?
 #    Default: true
@@ -94,6 +98,7 @@ class uwsgi (
     $config_file         = $uwsgi::params::config_file,
     $log_file            = $uwsgi::params::log_file,
     $app_directory       = $uwsgi::params::app_directory,
+    $tyrant              = $uwsgi::params::tyrant,
     $install_pip         = $uwsgi::params::install_pip,
     $install_python_dev  = $uwsgi::params::install_python_dev,
     $python_pip          = $uwsgi::params::python_pip,
