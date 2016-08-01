@@ -1,0 +1,15 @@
+#
+# This file is managed by puppet class 'uwsgi'
+#
+# uWSGI Emperor process systemd service
+#
+[Unit]
+Description=uWSGI Emperor
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/uwsgi --die-on-term --ini <%= @config_file %>
+
+[Install]
+WantedBy=multi-user.target

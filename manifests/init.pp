@@ -41,7 +41,7 @@
 # [*service_provider*]
 #    The service provider. Default: 'upstart'
 #    'upstart' is required for the default service_file, and
-#    works on RedHat >= 6
+#    works on RedHat = 6
 #
 # [*manage_service_file*]
 #    Whether to override the system service file if it exists. Default: true
@@ -156,6 +156,7 @@ class uwsgi (
           $service_file_real = $service_provider ? {
               redhat  => '/etc/init.d/uwsgi',
               upstart => '/etc/init/uwsgi.conf',
+              systemd => '/etc/systemd/system/uwsgi.service',
               default => '/etc/init/uwsgi.conf',
           }
       } else {
@@ -166,6 +167,7 @@ class uwsgi (
           $service_file_mode_real = $service_provider ? {
               redhat  => '0555',
               upstart => '0644',
+              systemd => '0644',
               default => '0644',
           }
       } else {
@@ -176,6 +178,7 @@ class uwsgi (
           $service_template_real = $service_provider ? {
               redhat  => 'uwsgi/uwsgi_service-redhat.erb',
               upstart => 'uwsgi/uwsgi_upstart.conf.erb',
+              systemd => 'uwsgi/uwsgi_systemd.service.erb',
               default => 'uwsgi/uwsgi_upstart.conf.erb',
           }
       } else {
@@ -192,8 +195,41 @@ class uwsgi (
           require  => Package[$package_name]
       }
       $required_files = [ $config_file, $service_file_real ]
+
+      if $service_provider == 'systemd' {
+        exec { 'uwsgi-reload-systemd':
+          command     => '/bin/systemctl daemon-reload',
+          refreshonly => true,
+          subscribe   => File[$service_file_real],
+          before      => Service[$service_name],
+        }
+      }
     } else {
       $required_files = $config_file
+    }
+
+    $log_directory = dirname($log_file)
+    $pid_directory = dirname($pidfile)
+    $socket_directory = dirname($socket)
+
+    exec { $log_directory:
+        creates => $log_directory,
+        command => "mkdir -p ${log_directory}",
+        path    => $::path
+    } -> file { $log_directory: }
+
+    exec { $pid_directory:
+        creates => $pid_directory,
+        command => "mkdir -p ${pid_directory}",
+        path    => $::path
+    } -> file { $pid_directory: }
+
+    if $socket_directory != $pid_directory {
+      exec { $socket_directory:
+          creates => $socket_directory,
+          command => "mkdir -p ${socket_directory}",
+          path    => $::path
+      } -> file { $socket_directory: }
     }
 
     file { $app_directory:
@@ -212,7 +248,10 @@ class uwsgi (
         provider   => $service_provider,
         require    => [
             Package[$package_name],
-            File[$required_files]
+            File[$required_files],
+            File[$log_directory],
+            File[$pid_directory],
+            File[$socket_directory],
             ],
         subscribe  => File[$required_files]
     }
