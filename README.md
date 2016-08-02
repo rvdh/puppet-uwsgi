@@ -64,13 +64,21 @@ redhat init.d or upstart depending on the service provider.
    Default: 'upstart'
 
    `upstart` is required for the default `service_file`, and
-   works on RedHat >= 6. Setting `service_provider` to `redhat`
+   works on RedHat 6. Setting `service_provider` to `redhat`
    will now deploy the init.d service file, unless you specifically
    set `service_template` etc.
+   `systemd` will create a systemd service on RedHat 7.
 
 * `manage_service_file`
    Whether to override the system service file if it exists.
    Default: true
+
+*  `binary_directory`
+   Default: '/usr/sbin'
+
+   Directory containing the uwsgi binary. Used by the `systemd`
+   service_provider; not used by the `upstart` or `redhat` service_provider
+   parameter.
 
 * `config_file`
    The location of the uwsgi config file.

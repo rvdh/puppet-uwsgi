@@ -14,6 +14,7 @@ class uwsgi::params {
     $service_enable      = true
     $service_provider    = 'upstart'
     $manage_service_file = true
+    $binary_directory    = '/usr/sbin'
     $config_file         = '/etc/uwsgi.ini'
     $tyrant              = true
     $install_pip         = true

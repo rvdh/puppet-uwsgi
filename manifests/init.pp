@@ -41,10 +41,15 @@
 # [*service_provider*]
 #    The service provider. Default: 'upstart'
 #    'upstart' is required for the default service_file, and
-#    works on RedHat = 6
+#    works on RedHat 6.
+#    'systemd' works on RedHat 7.
 #
 # [*manage_service_file*]
 #    Whether to override the system service file if it exists. Default: true
+#
+# [*binary_directory*]
+#    Directory containing the uwsgi binary. Used by the 'systemd'
+#    service_provider, but not 'upstart' or 'redhat'.
 #
 # [*config_file*]
 #    The location of the uwsgi config file. Default: '/etc/uwsgi.ini'
@@ -100,6 +105,7 @@ class uwsgi (
     $service_enable      = $uwsgi::params::service_enable,
     $service_provider    = $uwsgi::params::service_provider,
     $manage_service_file = $uwsgi::params::manage_service_file,
+    $binary_directory    = $uwsgi::params::binary_directory,
     $config_file         = $uwsgi::params::config_file,
     $log_file            = $uwsgi::params::log_file,
     $log_rotate          = $uwsgi::params::log_rotate,
