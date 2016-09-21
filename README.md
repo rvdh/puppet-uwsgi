@@ -1,6 +1,8 @@
 puppet-uwsgi
 ============
 
+*No Longer Maintained*
+
 A puppet module for installing and managing uwsgi
 
 ## Description
