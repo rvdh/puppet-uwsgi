@@ -30,12 +30,12 @@
 # - Josh Smeaton <josh.smeaton@gmail.com>
 #
 define uwsgi::app (
+    $uid,
+    $gid,
     $ensure                = 'present',
     $template              = 'uwsgi/uwsgi_app.ini.erb',
     $application_options   = undef,
-    $environment_variables = undef,
-    $uid,
-    $gid
+    $environment_variables = undef
 ) {
 
     file { "${::uwsgi::app_directory}/${title}.ini":
