@@ -42,7 +42,7 @@
 #    The service provider. Default: 'upstart'
 #    'upstart' is required for the default service_file, and
 #    works on RedHat 6.
-#    'systemd' works on RedHat 7.
+#    'systemd' works on RedHat 7 and Debian 8.
 #
 # [*manage_service_file*]
 #    Whether to override the system service file if it exists. Default: true
@@ -192,13 +192,13 @@ class uwsgi (
       }
 
       file { $service_file_real:
-          ensure   => $file_ensure,
-          owner    => 'root',
-          group    => 'root',
-          mode     => $service_file_mode_real,
-          replace  => $manage_service_file,
-          content  => template($service_template_real),
-          require  => Package[$package_name]
+          ensure  => $file_ensure,
+          owner   => 'root',
+          group   => 'root',
+          mode    => $service_file_mode_real,
+          replace => $manage_service_file,
+          content => template($service_template_real),
+          require => Package[$package_name]
       }
       $required_files = [ $config_file, $service_file_real ]
 
@@ -272,7 +272,7 @@ class uwsgi (
                 content => template('uwsgi/uwsgi_logrotate.erb'),
             }
         }
-        'absent', 'purge', 'purged': {
+        default: {
             file { '/etc/logrotate.d/uwsgi':
                 ensure  => 'absent',
             }
