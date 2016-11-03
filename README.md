@@ -275,6 +275,7 @@ https://guides.github.com/activities/contributing-to-open-source.
 
 **Release**  | **PR/Issue/commit**                                                                                               | **Contributer**
 -------------|-------------------------------------------------------------------------------------------------------------------|----------------------------------------
+1.3.1        | [Add systemd support for Debian 8](https://github.com/rvdh/puppet-uwsgi/pull/16)                                  | [@rvdh](https://github.com/rvdh)
 1.3.0        | [Add systemd support](https://github.com/rvdh/puppet-uwsgi/pull/14)                                               | [@andy-s-clark](https://github.com/andy-s-clark)
 1.3.0        | [Make tyrant mode configurable](https://github.com/rvdh/puppet-uwsgi/pull/12)                                     | [@TravellingGuy](https://github.com/TravellingGuy)
 1.3.0        | [Additional Options](https://github.com/rvdh/puppet-uwsgi/pull/11)                                                | [@elmerfud](https://github.com/elmerfud)
