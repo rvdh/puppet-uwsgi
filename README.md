@@ -264,3 +264,23 @@ uwsgi::emperor_options:
   no-orphans: 'true'
 ```
 
+## Contributers
+
+Contributions will be gratefully accepted.  Please go to the project page,
+fork the project, make your changes locally and then raise a pull request.
+Details on how to do this are available at
+https://guides.github.com/activities/contributing-to-open-source.
+
+### Additional Contributers
+
+**Release**  | **PR/Issue/commit**                                                                                               | **Contributer**
+-------------|-------------------------------------------------------------------------------------------------------------------|----------------------------------------
+1.3.0        | [Add systemd support](https://github.com/rvdh/puppet-uwsgi/pull/14)                                               | [@andy-s-clark](https://github.com/andy-s-clark)
+1.3.0        | [Make tyrant mode configurable](https://github.com/rvdh/puppet-uwsgi/pull/12)                                     | [@TravellingGuy](https://github.com/TravellingGuy)
+1.3.0        | [Additional Options](https://github.com/rvdh/puppet-uwsgi/pull/11)                                                | [@elmerfud](https://github.com/elmerfud)
+1.2.0        | [Support repeated application options by passing an array of values](https://github.com/rvdh/puppet-uwsgi/pull/6) | [@rayl](https://github.com/rayl)
+1.1.0        | [Fix typo in Upstart script](https://github.com/rvdh/puppet-uwsgi/pull/5)                                         | [@Kodapa](https://github.com/Kodapa)
+1.1.0        | [Support multiple env options](https://github.com/rvdh/puppet-uwsgi/pull/4)                                       | [@kimor79](https://github.com/kimor79)
+1.0.1        | [Fix logging when using init.d](https://github.com/rvdh/puppet-uwsgi/pull/3)                                      | [@kimor79](https://github.com/kimor79)
+1.0.0        | [init.d support](https://github.com/rvdh/puppet-uwsgi/pull/2)                                                     | [@kimor79](https://github.com/kimor79)
+0.9.0        |                                                                                                                   | [@jarshwah](https://github.com/jarshwah)

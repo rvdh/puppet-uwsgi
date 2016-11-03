@@ -1,12 +1,12 @@
 {
-  "name": "engage-uwsgi",
-  "version": "1.3.0",
-  "author": "jarshwah <josh.smeaton@gmail.com>",
+  "name": "vandenhof-uwsgi",
+  "version": "1.3.1",
+  "author": "Rick van den Hof <rick@vandenhof.eu>",
   "summary": "Install and configure uwsgi in Emperor mode",
   "license": "MIT",
-  "source": "https://github.com/Engage/puppet-uwsgi",
-  "project_page": "https://github.com/Engage/puppet-uwsgi",
-  "issues_url": "https://github.com/Engage/puppet-uwsgi/issues",
+  "source": "https://github.com/rvdh/puppet-uwsgi",
+  "project_page": "https://github.com/rvdh/puppet-uwsgi",
+  "issues_url": "https://github.com/rvdh/puppet-uwsgi/issues",
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",
