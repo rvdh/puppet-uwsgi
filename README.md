@@ -67,7 +67,7 @@ redhat init.d or upstart depending on the service provider.
    works on RedHat 6. Setting `service_provider` to `redhat`
    will now deploy the init.d service file, unless you specifically
    set `service_template` etc.
-   `systemd` will create a systemd service on RedHat 7.
+   `systemd` will create a systemd service on RedHat 7 and Debian 8.
 
 * `manage_service_file`
    Whether to override the system service file if it exists.
