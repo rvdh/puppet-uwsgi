@@ -90,6 +90,9 @@
 # [*emperor_options*]
 #    Extra options to set in the emperor config file
 #
+# [*applications*]
+#    Applications to be configured
+#
 # === Authors
 # - Josh Smeaton <josh.smeaton@gmail.com>
 #
@@ -117,7 +120,8 @@ class uwsgi (
     $python_dev          = $uwsgi::params::python_dev,
     $pidfile             = $uwsgi::params::pidfile,
     $socket              = $uwsgi::params::socket,
-    $emperor_options     = undef
+    $emperor_options     = undef,
+    $applications        = {},
 ) inherits uwsgi::params {
 
     validate_re($log_rotate, '^yes$|^no$|^purge$')
@@ -279,7 +283,8 @@ class uwsgi (
         }
     }
 
+    $_applications = merge ($applications, hiera_hash('uwsgi::app', {}))
+
     # finally, configure any applications necessary
-    $applications = hiera_hash('uwsgi::app', {})
-    create_resources('uwsgi::app', $applications)
+    create_resources('uwsgi::app', $_applications)
 }
