@@ -8,7 +8,7 @@ Description=uWSGI Emperor
 After=syslog.target
 
 [Service]
-ExecStart=<%= @binary_directory %>/uwsgi --die-on-term --ini <%= @config_file %>
+ExecStart=<%= @binary_directory %>/uwsgi --ini <%= @config_file %>
 # Requires systemd version 211 or newer
 RuntimeDirectory=uwsgi
 Restart=always
