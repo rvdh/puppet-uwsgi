@@ -220,20 +220,20 @@ class uwsgi (
 
     exec { $log_directory:
         creates => $log_directory,
-        command => "mkdir -p ${log_directory}",
+        command => "/bin/mkdir -p ${log_directory}",
         path    => $::path
     } -> file { $log_directory: }
 
     exec { $pid_directory:
         creates => $pid_directory,
-        command => "mkdir -p ${pid_directory}",
+        command => "/bin/mkdir -p ${pid_directory}",
         path    => $::path
     } -> file { $pid_directory: }
 
     if $socket_directory != $pid_directory {
       exec { $socket_directory:
           creates => $socket_directory,
-          command => "mkdir -p ${socket_directory}",
+          command => "/bin/mkdir -p ${socket_directory}",
           path    => $::path
       } -> file { $socket_directory: }
     }
