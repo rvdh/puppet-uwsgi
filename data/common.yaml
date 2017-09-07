@@ -1,4 +1,9 @@
 ---
+## Lookup Options for class parameters
+lookup_options:
+  uwsgi::app:
+    merge: deep
+
 ## uwsgi::service
 uwsgi::service::manage_file: true
 uwsgi::service::provider: systemd

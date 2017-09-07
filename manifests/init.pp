@@ -16,7 +16,7 @@
 # - Oliver Bertuch <oliver@bertuch.eu>
 #
 class uwsgi (
-  Optional[Hash[String[1],Any]] $app = {}, # TODO: merge behaviour setzen!
+  Optional[Hash[String[1],Any]] $app = {},
 ) {
   include uwsgi::install
   include uwsgi::config
