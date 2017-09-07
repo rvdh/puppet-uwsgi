@@ -1,0 +1,10 @@
+fixtures:
+  # use the forge modules so we can easily pin to a specific version
+#  forge_modules:
+#    stdlib: "puppetlabs/stdlib"
+  repositories:
+    stdlib: 
+      repo: "git://github.com/puppetlabs/puppetlabs-stdlib.git"
+      ref: "4.13.0"
+  symlinks:
+    uwsgi: "#{source_dir}"
