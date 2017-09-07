@@ -1,0 +1,7 @@
+---
+uwsgi::service::provider: redhat
+uwsgi::service::file: /etc/init.d/uwsgi
+uwsgi::service::file_mode: '0555'
+uwsgi::service::template: uwsgi/uwsgi_service-redhat.erb
+
+uwsgi::config::socket: /var/run/uwsgi/uwsgi.socket

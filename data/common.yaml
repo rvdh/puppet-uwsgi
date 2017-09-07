@@ -1,0 +1,28 @@
+---
+## uwsgi::service
+uwsgi::service::manage_file: true
+uwsgi::service::provider: systemd
+uwsgi::service::file: /etc/systemd/system/uwsgi.service
+uwsgi::service::file_mode: '0644'
+uwsgi::service::template: uwsgi/uwsgi_systemd.service.erb
+uwsgi::service::ensure: true
+uwsgi::service::enable: true
+# template
+uwsgi::service::binary_directory: /usr/sbin
+
+## uwsgi::config
+uwsgi::config::configfile: /etc/uwsgi.ini
+uwsgi::config::log_rotate: false
+# template
+uwsgi::config::emperor_options: {}
+uwsgi::config::tyrant: true
+uwsgi::config::logfile: /var/log/uwsgi/uwsgi-emperor.log
+
+## uwsgi::install
+uwsgi::install::package_name: uwsgi
+uwsgi::install::package_ensure: present
+uwsgi::install::package_provider: pip
+
+## uwsgi::packages
+uwsgi::packages::install_pip: true
+uwsgi::packages::install_python_dev: true
