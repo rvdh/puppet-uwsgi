@@ -18,11 +18,11 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-UWSGILOG="<%= @log_file %>"
+UWSGILOG="<%= @logfile %>"
 UWSGIPID="<%= @pidfile %>"
 UWSGISOCKET="<%= @socket %>"
 
-OPTIONS="--daemonize "${UWSGILOG}" --die-on-term --ini <%= @config_file %>"
+OPTIONS="--daemonize "${UWSGILOG}" --die-on-term --ini <%= @configfile %>"
 
 UWSGILOGDIR="${UWSGILOG%/*}"
 UWSGIPIDDIR="${UWSGIPID%/*}"
@@ -59,7 +59,7 @@ start() {
 	echo
 	[ $RETVAL -eq 0 ] && touch $lockfile
 	return $RETVAL
-}	
+}
 
 stop() {
 	[ "$EUID" != "0" ] && exit 4

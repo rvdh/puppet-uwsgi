@@ -8,7 +8,7 @@ uwsgi::service::template: uwsgi/uwsgi_systemd.service.erb
 uwsgi::service::ensure: true
 uwsgi::service::enable: true
 # template
-uwsgi::service::binary_directory: /usr/sbin
+uwsgi::service::binary_directory: /usr/bin
 
 ## uwsgi::config
 uwsgi::config::configfile: /etc/uwsgi.ini
