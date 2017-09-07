@@ -27,11 +27,11 @@ class uwsgi::service (
       replace => $manage_file,
       content => template($template),
     }
-    service { 'uwsgi':
-      ensure    => $ensure,
-      enable    => $enable,
-      provider  => $provider,
-      subscribe => File[$configfile],
-    }
+  }
+  service { 'uwsgi':
+    ensure    => $ensure,
+    enable    => $enable,
+    provider  => $provider,
+    subscribe => File[$configfile],
   }
 }

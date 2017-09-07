@@ -22,13 +22,13 @@ describe 'uwsgi::service' do
           else
             it { is_expected.to contain_file('/etc/systemd/system/uwsgi.service') }
           end
-        when 'RedHat'
-          case facts[:operatingsystemmajrelease]
-          when '6'
-            it { is_expected.to contain_file('/etc/init.d/uwsgi') }
-          else
-            it { is_expected.to contain_file('/etc/systemd/system/uwsgi.service') }
-          end
+        # when 'RedHat'
+        #   case facts[:operatingsystemmajrelease]
+        #   when '6'
+        #     it { is_expected.to contain_file('/etc/init.d/uwsgi') }
+        #   else
+        #     it { is_expected.to contain_file('/etc/systemd/system/uwsgi.service') }
+        #   end
         end
       end
     end

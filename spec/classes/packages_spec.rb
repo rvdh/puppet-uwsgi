@@ -16,9 +16,9 @@ describe 'uwsgi::packages' do
         when 'Debian'
           it { is_expected.to contain_package('python-dev').with_ensure('present') }
           it { is_expected.to contain_package('python-pip').with_ensure('present') }
-        when 'RedHat'
-          it { is_expected.to contain_package('python-devel').with_ensure('present') }
-          it { is_expected.to contain_package('python2-pip').with_ensure('present') }
+        # when 'RedHat'
+        #   it { is_expected.to contain_package('python-devel').with_ensure('present') }
+        #   it { is_expected.to contain_package('python2-pip').with_ensure('present') }
         end
       end
     end
