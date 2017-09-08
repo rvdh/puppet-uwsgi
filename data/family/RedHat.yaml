@@ -10,7 +10,9 @@ uwsgi::config::socket: /run/uwsgi/uwsgi.socket
 
 ## install uwsgi from packages rather than pip by default
 uwsgi::install::package_provider: yum
-uwsgi::packages::python_dev: python-devel
+uwsgi::packages::python_dev:
+  - python-devel
+  - gcc
 uwsgi::packages::python_pip: python2-pip
 uwsgi::packages::install_pip: false
 uwsgi::packages::install_python_dev: false
