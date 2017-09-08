@@ -16,8 +16,6 @@ class uwsgi::install (
 
   File {
     ensure  => 'directory',
-    owner   => 'root',
-    group   => 'root',
     require => Package[$package_name],
   }
 
