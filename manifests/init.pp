@@ -20,9 +20,8 @@ class uwsgi (
 ) {
   include uwsgi::install
   include uwsgi::config
-  include uwsgi::service
 
-  # finally, configure any applications necessary
+  # configure any applications retrieved from hiera / class param
   if $app {
     each($app) |$name, $options| {
       uwsgi::app { $name:
@@ -30,4 +29,6 @@ class uwsgi (
       }
     }
   }
+
+  include uwsgi::service
 }

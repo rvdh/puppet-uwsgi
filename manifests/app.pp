@@ -45,5 +45,6 @@ define uwsgi::app (
     group   => $gid,
     mode    => '0644',
     content => template($template),
+    notify  => Service['uwsgi'],
   }
 }
