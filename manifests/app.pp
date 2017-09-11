@@ -38,7 +38,7 @@ define uwsgi::app (
   Optional[Hash[String[1],Scalar]] $environment_variables = {},
   Optional[Stdlib::Absolutepath] $app_dir = lookup('uwsgi::config::app_directory')
 ) {
-  include uwsgi
+  include ::uwsgi
   file { "${app_dir}/${title}.ini":
     ensure  => $ensure,
     owner   => $uid,

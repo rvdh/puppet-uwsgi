@@ -18,32 +18,32 @@ describe 'uwsgi::install' do
 
         case facts[:osfamily]
         when 'Debian'
-          it do
-            is_expected.to contain_package('uwsgi').with(
-              {
+          context 'on Debian' do
+            it do
+              is_expected.to contain_package('uwsgi').with(
                 'provider' => 'pip',
                 'ensure' => 'present'
-              })
-          end
-          it { is_expected.to contain_file('/etc/uwsgi/apps-enabled').with_ensure('directory') }
-          it { is_expected.to contain_file('/run/uwsgi').with_ensure('directory') }
-
-        when 'RedHat'
-          it do
-            is_expected.to contain_package('uwsgi').with(
-              {
-                'provider' => 'yum',
-                'ensure' => 'present'
-              })
-          end
-          it { is_expected.to contain_package('uwsgi').with_provider('yum') }
-          it { is_expected.to contain_file('/etc/uwsgi.d').with_ensure('directory') }
-          it { is_expected.to contain_file('/var/run/uwsgi').with_ensure('directory') }
-          case facts[:operatingsystemmajrelease]
-          when '7'
+              )
+            end
+            it { is_expected.to contain_file('/etc/uwsgi/apps-enabled').with_ensure('directory') }
             it { is_expected.to contain_file('/run/uwsgi').with_ensure('directory') }
           end
-
+        when 'RedHat'
+          context 'on RedHat' do
+            it do
+              is_expected.to contain_package('uwsgi').with(
+                'provider' => 'yum',
+                'ensure' => 'present'
+              )
+            end
+            it { is_expected.to contain_package('uwsgi').with_provider('yum') }
+            it { is_expected.to contain_file('/etc/uwsgi.d').with_ensure('directory') }
+            it { is_expected.to contain_file('/var/run/uwsgi').with_ensure('directory') }
+            case facts[:operatingsystemmajrelease]
+            when '7'
+              it { is_expected.to contain_file('/run/uwsgi').with_ensure('directory') }
+            end
+          end
         end
       end
     end

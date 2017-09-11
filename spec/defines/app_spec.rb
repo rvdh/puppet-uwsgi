@@ -22,23 +22,23 @@ describe 'uwsgi::app' do
         case facts[:osfamily]
         when 'Debian'
           it do
-            is_expected.to contain_file('/etc/uwsgi/apps-enabled/test.ini')
-              .with({
-                      'ensure' => 'present',
-                      'owner' => 'test',
-                      'group' => 'test',
-                      'mode' => '0644'
-                    })
+            is_expected.to contain_file('/etc/uwsgi/apps-enabled/test.ini').
+              with(
+                'ensure' => 'present',
+                'owner' => 'test',
+                'group' => 'test',
+                'mode' => '0644'
+              )
           end
         when 'RedHat'
           it do
-            is_expected.to contain_file('/etc/uwsgi.d/test.ini')
-              .with({
-                      'ensure' => 'present',
-                      'owner' => 'test',
-                      'group' => 'test',
-                      'mode' => '0644'
-                    })
+            is_expected.to contain_file('/etc/uwsgi.d/test.ini').
+              with(
+                'ensure' => 'present',
+                'owner' => 'test',
+                'group' => 'test',
+                'mode' => '0644'
+              )
           end
         end
       end

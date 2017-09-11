@@ -18,8 +18,8 @@
 class uwsgi (
   Optional[Hash[String[1],Any]] $app = {},
 ) {
-  include uwsgi::install
-  include uwsgi::config
+  include ::uwsgi::install
+  include ::uwsgi::config
 
   # configure any applications retrieved from hiera / class param
   if $app {
@@ -30,5 +30,5 @@ class uwsgi (
     }
   }
 
-  include uwsgi::service
+  include ::uwsgi::service
 }

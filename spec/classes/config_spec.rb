@@ -16,11 +16,6 @@ describe 'uwsgi::config' do
         it { is_expected.to contain_file('/etc/uwsgi.ini').with_ensure('present') }
         # logrotate file
         it { is_expected.to contain_file('/etc/logrotate.d/uwsgi').with_ensure('absent') }
-
-        #case facts[:osfamily]
-        #when 'Debian'
-        #when 'RedHat'
-        #end
       end
     end
   end

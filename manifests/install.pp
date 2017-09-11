@@ -6,7 +6,7 @@ class uwsgi::install (
 ){
 
   # dependencies
-  include uwsgi::packages
+  include ::uwsgi::packages
   # install via provider
   package { $package_name:
     ensure   => $package_ensure,
