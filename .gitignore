@@ -24,6 +24,8 @@ build/
 /Gemfile.lock
 /spec/reports/
 /spec/fixtures/
+/junit
+/log
 
 ## Environment normalisation:
 /.bundle/
