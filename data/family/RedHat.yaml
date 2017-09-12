@@ -9,6 +9,7 @@ uwsgi::config::pidfile: /var/run/uwsgi/uwsgi.pid
 uwsgi::config::socket: /run/uwsgi/uwsgi.socket
 
 ## install uwsgi from packages rather than pip by default
+uwsgi::packages::manage_epel: true
 uwsgi::install::package_provider: yum
 uwsgi::packages::python_dev:
   - python-devel

@@ -18,6 +18,9 @@ RSpec.configure do |c|
     puppet_module_install(source: proj_root, module_name: 'uwsgi')
     hosts.each do |host|
       on host, puppet('module', 'install', 'puppetlabs-stdlib'), acceptable_exit_codes: [0, 1]
+      if fact('osfamily') == 'RedHat'
+        on host, puppet('module', 'install', 'stahnma-epel'), acceptable_exit_codes: [0, 1]
+      end
     end
   end
 end
