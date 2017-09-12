@@ -3,3 +3,8 @@ uwsgi::service::provider: upstart
 uwsgi::service::file: /etc/init/uwsgi.conf
 uwsgi::service::file_mode: '0644'
 uwsgi::service::template: uwsgi/uwsgi_upstart.conf.erb
+
+# on Debian 7 there is no recent package of uWSGI, so install via pip
+uwsgi::install::package_provider: pip
+uwsgi::packages::install_pip: true
+uwsgi::packages::install_python_dev: true

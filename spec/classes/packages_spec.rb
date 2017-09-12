@@ -14,8 +14,11 @@ describe 'uwsgi::packages' do
 
         case facts[:osfamily]
         when 'Debian'
-          it { is_expected.to contain_package('python-dev').with_ensure('present') }
-          it { is_expected.to contain_package('python-pip').with_ensure('present') }
+          case facts[:operatingsystemmajrelease]
+          when '7', '14.04'
+            it { is_expected.to contain_package('python-dev').with_ensure('present') }
+            it { is_expected.to contain_package('python-pip').with_ensure('present') }
+          end
         end
       end
 

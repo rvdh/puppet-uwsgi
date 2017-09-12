@@ -32,5 +32,5 @@ uwsgi::install::package_provider: pip
 
 ## uwsgi::packages
 uwsgi::packages::manage_epel: false
-uwsgi::packages::install_pip: true
-uwsgi::packages::install_python_dev: true
+uwsgi::packages::install_pip: false
+uwsgi::packages::install_python_dev: false

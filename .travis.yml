@@ -33,6 +33,12 @@ matrix:
   - rvm: 2.4.1
     bundler_args: --without development
     dist: trusty
+    env: CHECK=beaker BEAKER_set=docker/debian-7 BEAKER_debug=true PUPPET_VERSION="~> 5.0"
+    services: docker
+    sudo: required
+  - rvm: 2.4.1
+    bundler_args: --without development
+    dist: trusty
     env: CHECK=beaker BEAKER_set=docker/debian-8 BEAKER_debug=true PUPPET_VERSION="~> 5.0"
     services: docker
     sudo: required
@@ -46,6 +52,18 @@ matrix:
     bundler_args: --without development
     dist: trusty
     env: CHECK=beaker BEAKER_set=docker/centos-7 BEAKER_debug=true PUPPET_VERSION="~> 5.0"
+    services: docker
+    sudo: required
+  - rvm: 2.4.1
+    bundler_args: --without development
+    dist: trusty
+    env: CHECK=beaker BEAKER_set=docker/ubuntu-14.04 BEAKER_debug=true PUPPET_VERSION="~> 5.0"
+    services: docker
+    sudo: required
+  - rvm: 2.4.1
+    bundler_args: --without development
+    dist: trusty
+    env: CHECK=beaker BEAKER_set=docker/ubuntu-16.04 BEAKER_debug=true PUPPET_VERSION="~> 5.0"
     services: docker
     sudo: required
 branches:

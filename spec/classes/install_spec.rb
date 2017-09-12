@@ -19,11 +19,21 @@ describe 'uwsgi::install' do
         case facts[:osfamily]
         when 'Debian'
           context 'on Debian' do
-            it do
-              is_expected.to contain_package('uwsgi').with(
-                'provider' => 'pip',
-                'ensure' => 'present'
-              )
+            case facts[:operatingsystemmajrelease]
+            when '7', '14.04'
+              it do
+                is_expected.to contain_package('uwsgi').with(
+                  'provider' => 'pip',
+                  'ensure' => 'present'
+                )
+              end
+            else
+              it do
+                is_expected.to contain_package('uwsgi').with(
+                  'provider' => 'apt',
+                  'ensure' => 'present'
+                )
+              end
             end
             it { is_expected.to contain_file('/etc/uwsgi/apps-enabled').with_ensure('directory') }
             it { is_expected.to contain_file('/run/uwsgi').with_ensure('directory') }
