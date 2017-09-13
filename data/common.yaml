@@ -16,6 +16,7 @@ uwsgi::service::ensure: true
 uwsgi::service::enable: true
 # template
 uwsgi::service::binary_directory: /usr/bin
+uwsgi::service::kill_signal: SIGINT
 
 ## uwsgi::config
 uwsgi::config::configfile: /etc/uwsgi.ini

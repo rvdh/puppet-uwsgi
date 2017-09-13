@@ -55,6 +55,23 @@ describe 'uwsgi::service' do
           end
         end
       end
+
+      context 'with manage_file = true and kill_signal = SIGTERM' do
+        let(:params) do
+          {
+            'manage_file' => true,
+            'kill_signal' => 'SIGTERM',
+            'template' => 'uwsgi/uwsgi_systemd.service.erb',
+            'file' => '/etc/systemd/system/uwsgi.service'
+          }
+        end
+
+        it do
+          is_expected.to contain_file('/etc/systemd/system/uwsgi.service').
+            with_content(%r{uwsgi --die-on-term}).
+            with_content(%r{KillSignal=SIGTERM})
+        end
+      end
     end
   end
 end

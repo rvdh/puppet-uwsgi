@@ -1,5 +1,6 @@
 ---
 uwsgi::service::provider: systemd
+uwsgi::service::kill_signal: SIGTERM
 
 ## uwsgi::config
 # template

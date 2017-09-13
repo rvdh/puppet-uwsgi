@@ -9,6 +9,7 @@ class uwsgi::service (
   Optional[Boolean] $enable,
   # template variables
   Optional[Stdlib::Absolutepath] $binary_directory,
+  Optional[Enum['SIGTERM','SIGINT']] $kill_signal,
   Optional[Stdlib::Absolutepath] $configfile = lookup('uwsgi::config::configfile'),
   Optional[Stdlib::Absolutepath] $logfile = lookup('uwsgi::config::logfile'),
   Optional[Stdlib::Absolutepath] $pidfile = lookup('uwsgi::config::pidfile'),
@@ -20,6 +21,12 @@ class uwsgi::service (
       true    => 'present',
       default => 'absent'
     }
+
+    $die_on_term = $kill_signal ? {
+      'SIGTERM' => '--die-on-term',
+      default   => '',
+    }
+
     file { $file:
       ensure  => $file_ensure,
       owner   => 'root',
@@ -29,6 +36,7 @@ class uwsgi::service (
       content => template($template),
     }
   }
+
   service { 'uwsgi':
     ensure    => $ensure,
     enable    => $enable,
