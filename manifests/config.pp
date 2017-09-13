@@ -27,17 +27,13 @@ class uwsgi::config (
     content => template('uwsgi/uwsgi.ini.erb'),
   }
 
-  if $log_rotate and $file_ensure == 'present' {
-    $file_logrotate = 'present'
-  } else {
-    $file_logrotate = 'absent'
-  }
-
-  file { '/etc/logrotate.d/uwsgi':
-    ensure  => $file_logrotate,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => template('uwsgi/uwsgi_logrotate.erb'),
+  if $log_rotate {
+    file { '/etc/logrotate.d/uwsgi':
+      ensure  => $file_ensure,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => template('uwsgi/uwsgi_logrotate.erb'),
+    }
   }
 }
