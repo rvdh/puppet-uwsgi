@@ -27,6 +27,7 @@ describe 'uwsgi::install' do
                   'ensure' => 'present'
                 )
               end
+              it { is_expected.to contain_exec('uwsgi-mkdir-app-dir') }
             else
               it do
                 is_expected.to contain_package('uwsgi').with(

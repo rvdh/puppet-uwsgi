@@ -1,7 +1,7 @@
 # Class to install uWSGI
 class uwsgi::install (
   Optional[String[1]] $package_name,
-  Optional[String[1]] $package_ensure,
+  Optional[Enum['present','purged','absent']] $package_ensure,
   Optional[String[1]] $package_provider,
 ){
 
@@ -28,6 +28,16 @@ class uwsgi::install (
   file { $pid_directory: }
   if $socket_directory != $pid_directory {
     file { $socket_directory: }
+  }
+
+  # if installation is via pip, ensure the directory tree is present
+  # (needed on Debian systems)
+  if $package_provider == 'pip' {
+    exec { 'uwsgi-mkdir-app-dir':
+      creates => $app_directory,
+      command => "mkdir -p ${app_directory}",
+      path    => $::path,
+    }
   }
   file { $app_directory: }
 }
