@@ -7,5 +7,9 @@ uwsgi::service::template: uwsgi/uwsgi_upstart.conf.erb
 
 # on Ubuntu 14.04 there is no recent package of uWSGI, so install via pip
 uwsgi::install::package_provider: pip
+uwsgi::install::package_name: uwsgi
 uwsgi::packages::install_pip: true
 uwsgi::packages::install_python_dev: true
+
+uwsgi::config::configfile: /etc/uwsgi.ini
+uwsgi::config::app_directory: /etc/uwsgi/apps-enabled

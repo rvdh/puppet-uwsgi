@@ -1,15 +1,20 @@
 ---
 uwsgi::service::provider: systemd
+# default on Debian 8 and Ubuntu 16.04 is an old init script - change to
+# use a native systemd unit file
+uwsgi::service::manage_file: true
 uwsgi::service::kill_signal: SIGTERM
-
-## uwsgi::config
-# template
-uwsgi::config::app_directory: /etc/uwsgi/apps-enabled
-uwsgi::config::pidfile: /run/uwsgi/uwsgi.pid
-uwsgi::config::socket: /run/uwsgi/uwsgi.socket
 
 ## uwsgi::install
 uwsgi::install::package_provider: apt
+uwsgi::install::package_name: uwsgi-emperor
+
+## uwsgi::config
+uwsgi::config::configfile: /etc/uwsgi-emperor/emperor.ini
+# template
+uwsgi::config::app_directory: /etc/uwsgi-emperor/vassals
+uwsgi::config::pidfile: /run/uwsgi/uwsgi.pid
+uwsgi::config::socket: /run/uwsgi/uwsgi.socket
 
 ## uwsgi::packages
 uwsgi::packages::python_dev:

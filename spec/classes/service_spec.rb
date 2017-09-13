@@ -7,7 +7,12 @@ describe 'uwsgi::service' do
         facts
       end
       let(:hiera_config) { 'hiera.yaml' }
-      let(:pre_condition) { 'file {"/etc/uwsgi.ini": ensure => present}' }
+      let(:pre_condition) do
+        [
+          'file {"/etc/uwsgi.ini": ensure => present}',
+          'file {"/etc/uwsgi-emperor/emperor.ini": ensure => present}'
+        ]
+      end
 
       context 'without parameters' do
         it { is_expected.to compile.with_all_deps }

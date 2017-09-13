@@ -21,14 +21,27 @@ describe 'uwsgi::app' do
 
         case facts[:osfamily]
         when 'Debian'
-          it do
-            is_expected.to contain_file('/etc/uwsgi/apps-enabled/test.ini').
-              with(
-                'ensure' => 'present',
-                'owner' => 'test',
-                'group' => 'test',
-                'mode' => '0644'
-              )
+          case facts[:operatingsystemmajrelease]
+          when '7', '14.04'
+            it do
+              is_expected.to contain_file('/etc/uwsgi/apps-enabled/test.ini').
+                with(
+                  'ensure' => 'present',
+                  'owner' => 'test',
+                  'group' => 'test',
+                  'mode' => '0644'
+                )
+            end
+          else
+            it do
+              is_expected.to contain_file('/etc/uwsgi-emperor/vassals/test.ini').
+                with(
+                  'ensure' => 'present',
+                  'owner' => 'test',
+                  'group' => 'test',
+                  'mode' => '0644'
+                )
+            end
           end
         when 'RedHat'
           it do

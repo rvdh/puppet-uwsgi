@@ -28,15 +28,16 @@ describe 'uwsgi::install' do
                 )
               end
               it { is_expected.to contain_exec('uwsgi-mkdir-app-dir') }
+              it { is_expected.to contain_file('/etc/uwsgi/apps-enabled').with_ensure('directory') }
             else
               it do
-                is_expected.to contain_package('uwsgi').with(
+                is_expected.to contain_package('uwsgi-emperor').with(
                   'provider' => 'apt',
                   'ensure' => 'present'
                 )
               end
+              it { is_expected.to contain_file('/etc/uwsgi-emperor/vassals').with_ensure('directory') }
             end
-            it { is_expected.to contain_file('/etc/uwsgi/apps-enabled').with_ensure('directory') }
             it { is_expected.to contain_file('/run/uwsgi').with_ensure('directory') }
           end
         when 'RedHat'

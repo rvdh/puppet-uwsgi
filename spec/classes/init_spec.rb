@@ -33,10 +33,18 @@ describe 'uwsgi' do
 
         case facts[:osfamily]
         when 'Debian'
-          it {
-            is_expected.to contain_file('/etc/uwsgi/apps-enabled/test1.ini').
-              with_ensure('present')
-          }
+          case facts[:operatingsystemmajrelease]
+          when '7', '14.04'
+            it {
+              is_expected.to contain_file('/etc/uwsgi/apps-enabled/test1.ini').
+                with_ensure('present')
+            }
+          else
+            it {
+              is_expected.to contain_file('/etc/uwsgi-emperor/vassals/test1.ini').
+                with_ensure('present')
+            }
+          end
         when 'RedHat'
           it {
             is_expected.to contain_file('/etc/uwsgi.d/test1.ini').

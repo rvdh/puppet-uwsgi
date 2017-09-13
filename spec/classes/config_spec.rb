@@ -13,7 +13,21 @@ describe 'uwsgi::config' do
         it { is_expected.to contain_class('uwsgi::config') }
 
         # config file
-        it { is_expected.to contain_file('/etc/uwsgi.ini').with_ensure('present') }
+        case facts[:osfamily]
+        when 'Debian'
+          context 'on Debian' do
+            case facts[:operatingsystemmajrelease]
+            when '7', '14.04'
+              it { is_expected.to contain_file('/etc/uwsgi.ini').with_ensure('present') }
+            else
+              it { is_expected.to contain_file('/etc/uwsgi-emperor/emperor.ini').with_ensure('present') }
+            end
+          end
+        when 'RedHat'
+          context 'on RedHat' do
+            it { is_expected.to contain_file('/etc/uwsgi.ini').with_ensure('present') }
+          end
+        end
       end
 
       context 'with logrotate set true' do
