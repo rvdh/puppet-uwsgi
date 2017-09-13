@@ -1,214 +1,50 @@
 puppet-uwsgi
 ============
 
-A puppet module for installing and managing uwsgi
+A puppet module for installing and managing uWSGI (in emperor mode)
+
+[![Build Status](https://travis-ci.org/poikilotherm/puppet-uwsgi-wip.svg?branch=refactor_puppet5)](https://travis-ci.org/poikilotherm/puppet-uwsgi-wip)
+
+**WARNING**: version 2.0 and newer of this module _requires_ Puppet 4.7 and newer.
+See version 1.3.2 for compatibility with Puppet 3.
 
 ## Description
 
 This module installs and configures [uWSGI](http://uwsgi-docs.readthedocs.org)
 in [Emperor mode](http://uwsgi-docs.readthedocs.org/en/latest/Emperor.html).
 
-It can also create and manage uwsgi applications that run under the emperor,
-which are best defined in hiera.
+It can also create and manage uWSGI applications that run under the emperor,
+which are best defined in Hiera.
 
 Just about every option is configurable, so it should work on most distributions
-by putting together a hiera file.
+by putting together a Hiera file.
 
-## Classes
+## Usage
 
-### uwsgi
+There are two options to get uWSGI going on your machine: either `include uwsgi`
+and provide vassal configurations via `uwsgi::app` from Hiera or create
+resources via the defined type `uwsgi::app` by yourself (will `include uwsgi`
+for you).
 
-The main entry point. Simply ``include uwsgi`` to accept all the default
-parameters. The service file template will, by default, auto-configure itself for
-redhat init.d or upstart depending on the service provider.
+If you are using this module on RedHat like distributions, be aware the the uWSGI
+or Python pip package is not contained in standard repos. By default, this module
+will `include ::epel` from `stahnma/epel` for management (see parameters below).
+Remember to include this in your `Puppetfile` if necessary!
 
-#### Parameters
+### Option 1: `include uwsgi`
 
-* `package_name`
-   The package name to install.
-   Default: 'uwsgi'
-
-* `package_ensure`
-   Package state.
-   Default: 'installed'
-
-   If 'absent' or 'purged', then remove the `service_file` and `config_file`
-   also
-
-* `package_provider`
-   The provider to use to install the package.
-   Default: 'pip'
-
-* `service_name`
-   The name of the service to run uwsgi.
-   Default: 'uwsgi'
-
-* `service_file`
-   The location of the service file.
-   Default: '/etc/init/uwsgi.conf'
-
-* `service_template`
-   The location of the template to generate the *service_file*.
-   Default: 'uwsgi/uwsgi_upstart.conf.erb'
-
-* `service_ensure`
-   The service state.
-   Default: true
-
-* `service_enable`
-   The service onboot state.
-   Default: true
-
-* `service_provider`
-   The service provider.
-   Default: 'upstart'
-
-   `upstart` is required for the default `service_file`, and
-   works on RedHat 6. Setting `service_provider` to `redhat`
-   will now deploy the init.d service file, unless you specifically
-   set `service_template` etc.
-   `systemd` will create a systemd service on RedHat 7 and Debian 8.
-
-* `manage_service_file`
-   Whether to override the system service file if it exists.
-   Default: true
-
-*  `binary_directory`
-   Default: '/usr/sbin'
-
-   Directory containing the uwsgi binary. Used by the `systemd`
-   service_provider; not used by the `upstart` or `redhat` service_provider
-   parameter.
-
-* `config_file`
-   The location of the uwsgi config file.
-   Default: '/etc/uwsgi.ini'
-
-* `log_dir`
-   The location of the uwsgi emperor log.
-   Default: '/var/log/uwsgi/uwsgi-emperor.log'
-
-* `log_rotate`
-   Whether or not to deploy a logrotate script.
-   Accepts: 'yes', 'no', 'purge'
-   Default: 'no'
-
-* `app_directory`
-   Vassal directory for application config files.
-
-   RedHat default: '/etc/uwsgi.d'
-   Other default: '/etc/uwsgi/apps-enabled'
-
-* `install_pip`
-   Install pip if it's not already installed?
-   Default: true
-
-* `install_python_dev`
-   Install python header files if not already installed?
-   Default: true
-
-* `python_pip`
-   Package to be installed for pip
-   Default: 'python-pip'
-
-* `python_dev`
-   Package to be installed for python headers
-   Default RedHat: 'python-devel'
-   Default Other: 'python-dev'
-
-* `emperor_options`
-   Extra options to set in the emperor config file. Default: undef
-
-#### Using Hiera
-
-Sets up some custom options within the emperor config file:
-
-```yaml
----
-uwsgi::emperor_options:
-  vacuum: 'True'
-  reload-mercy: 8
-```
-
-Don't manage python or pip, and use apt-get to install uwsgi. Don't manage
-the service file, as it will be provided by the package itself:
-
-```yaml
----
-uwsgi::install_pip: false
-uwsgi::install_python_dev: false
-uwsgi::package_provider: 'apt'
-uwsgi::manage_service_file: false
-```
-
-Remove uwsgi:
-
-```yaml
----
-uwsgi::package_ensure: 'absent'
-uwsgi::service_ensure: false
-uwsgi::service_enable: false
-uwsgi::install_pip: false
-uwsgi::install_python_dev: false
-```
-
-## Defined Types
-
-### uwsgi::app
-
-Responsible for creating uwsgi applications that run under the uwsgi emperor.
-You shouldn't need to use this type directly, as the `uwsgi` class will
-automatically create all applications defined in hiera under the uwsgi::app
-key. See the hiera section below for examples.
-
-#### Parameters
-
-* `ensure`
-   Ensure the config file exists. Default: 'present'
-
-* `template`
-   The template used to construct the config file.
-   Default: 'uwsgi/uwsgi_app.ini.erb'
-
-* `uid`
-   The user to run the application as. Required.
-   May be the user name, not just the id.
-
-* `gid`
-   The group to run the application as. Required.
-   May be the group name, not just the id.
-
-* `application_options`
-   Extra options to set in the application config file
-
-* `environment_variables`
-   Extra environment variabls to set in the application config file
-
-#### Using Hiera
-
-Configure a django application:
+1. Add `include uwsgi` to your role or profile class.
+2. Add configuration to Hiera (minimal example given):
 
 ```yaml
 ---
 uwsgi::app:
-  django:
-    ensure: 'present'
-    uid: 'django'
-    gid: 'django'
-    application_options:
-      chdir: '/path/to/project'
-      module: 'mysite.wsgi:application'
-      socket: '/tmp/uwsgi_django.sock'
-      master: 'True'
-      vaccum: 'True'
-      max-requests: '5000'
-      buffer-size: '32768'
-      processes: 4
-      threads: 8
+  example:
+    uid: example
+    gid: example
 ```
 
-Configure multiple applications (all yaml files are aggregated using
-`hiera_hash`):
+Configure multiple applications (merged with [`'deep'` strategy](https://docs.puppet.com/puppet/latest/hiera_merging.html#deep)):
 
 ```yaml
 # common.yaml
@@ -237,32 +73,163 @@ uwsgi::app:
       socket: '/tmp/uwsgi_django2.sock'
 ```
 
-Example using hiera to use Debian Jessie APT packages & default file locations
+### Option 2: create `uwsgi::app` resources
+
+1. Add configuration to Hiera (minimal example given):
+```yaml
+---
+apps:
+  example:
+    uid: example
+    gid: example
+```
+2. Create resources (minimal example):
+```puppet
+$apps = lookup('apps')
+each($app) |$name, $options| {
+  uwsgi::app { $name:
+    * => $options,
+  }
+}
+```
+
+## Limitations
+
+1. Users for your vassals are NOT managed by this module.
+2. This module uses unit testing and acceptance testing for the supported
+   operating system versions. Try your luck on other platforms...
+3. This module does not support Puppet 3 or Puppet < 4.7 and heavily relies on
+   Hiera 5 data-in-modules. Please upgrade.
+
+## Defined Types
+
+### uwsgi::app
+
+Responsible for creating uWSGI applications (vassals) that run under the uWSGI emperor.
+
+#### Parameters
+
+* `uid`
+   The user to run the application as. Required.
+   May be the user name or the id.
+
+* `gid`
+   The group to run the application as. Required.
+   May be the group name or the id.
+
+* `ensure`
+   Ensure the config file exists.
+   Default: `'present'`
+
+* `template`
+   The template used to construct the config file.
+   Default: `'uwsgi/uwsgi_app.ini.erb'`
+
+* `application_options`
+   Hash of extra options to set in the application config file.
+   Default: `{}`
+   Example: `{ 'socket' => '/tmp/app.socket' }`
+
+* `environment_variables`
+   Hash of extra environment variabls to set in the application config file.
+   Default: `{}`
+   Example: `{ 'DJANGO_ENV_VAR' => 'example' }`
+
+#### Using Hiera
+
+Configure a Django application:
 
 ```yaml
 ---
-classes:
-  - uwsgi
-uwsgi::package_name:
-  - 'uwsgi-emperor'
-  - 'uwsgi-plugins-all'
-uwsgi::package_provider: 'apt'
-uwsgi::service_name: 'uwsgi-emperor'
-uwsgi::service_provider: 'debian'
-uwsgi::manage_service_file: false
-uwsgi::config_file: '/etc/uwsgi-emperor/emperor.ini'
-uwsgi::log_dir: '/var/log/uwsgi/emperor.log'
-uwsgi::app_directory: '/etc/uwsgi-emperor/vassals'
-uwsgi::install_pip: false
-uwsgi::install_python_dev: false
-uwsgi::socket: undef
-uwsgi::pidfile: '/run/uwsgi-emperor.pid'
-uwsgi::emperor_options:
-  uid: 'www-data'
-  gid: 'www-data'
-  workers: '2'
-  no-orphans: 'true'
+uwsgi::app:
+  django:
+    ensure: 'present'
+    uid: 'django'
+    gid: 'django'
+    application_options:
+      chdir: '/path/to/project'
+      module: 'mysite.wsgi:application'
+      socket: '/tmp/uwsgi_django.sock'
+      master: 'True'
+      vaccum: 'True'
+      max-requests: '5000'
+      buffer-size: '32768'
+      processes: 4
+      threads: 8
 ```
+
+## Classes
+
+### uwsgi
+
+The main entry point. Simply ``include uwsgi`` to accept all the default
+parameters. The service file template will, by default, auto-configure itself
+depending on the service provider (RedHat init.d / UpStart / SystemD).
+
+#### Parameters
+
+* `app`
+   A hash of `uwsgi::app` resources to create for you. See above.
+   Default: `{}`
+
+### Private subclasses
+
+Any subclasses of `::uwsgi` are private and normally you should not need to
+fiddle around with them. Instead, use parameters configurable via Hiera (see
+next section).
+
+## Parameters (via Hiera)
+
+None of the following parameters are required. Depending on your distribution
+and version, this provides sane defaults.
+
+If you want to add a new distribution or version, have a look at the `data`
+directory of this module.
+
+Most certainly you want to configure some emperor options. Example:
+```yaml
+---
+uwsgi::emperor_options:
+  vacuum: 'True'
+  reload-mercy: 8
+```
+
+### Installation
+
+* `uwsgi::install::package_name` The package name to install.
+* `uwsgi::install::package_ensure` Package state. Cascades to config files.
+* `uwsgi::install::package_provider` The provider to use to install the package.
+
+#### Build and Runtime dependencies
+
+* `uwsgi::packages::manage_epel` Choose to depend on epel module. Default on RedHat.
+* `uwsgi::packages::install_pip` Install pip if it's not already installed? Don't by default.
+* `uwsgi::packages::install_python_dev` Install python header files and other build time dependencies if not already installed? Don't by default. Merge strategy "unique".
+* `uwsgi::packages::python_dev` String or Array of build time dependency package names.
+* `uwsgi::packages::python_pip` String of pip package name.
+
+### Emperor Configuration
+
+* `uwsgi::config::configfile` Absolute path to config file.
+* `uwsgi::config::log_rotate` Install logrotate rule? Don't by default.
+* `uwsgi::config::app_directory` Absolute path to store vassal configurations.
+* `uwsgi::config::pidfile` Absolute path to pid file.
+* `uwsgi::config::socket` Absolute path to socket file.
+* `uwsgi::config::emperor_options` Hash of extra options for emperor ini file.
+* `uwsgi::config::tyrant` Start emperor in "tryant" mode?
+* `uwsgi::config::logfile` Absolute path to log file.
+
+### Service
+
+* `uwsgi::service::manage_file` Provide a init system dependent start script/file? (or use package provided)
+* `uwsgi::service::provider` Service provider of this system. Depends on your distribution.
+* `uwsgi::service::file` Absolute path to script file.
+* `uwsgi::service::file_mode` Mode of script file.
+* `uwsgi::service::template` Template to use (auto depends on service provider).
+* `uwsgi::service::ensure` Service status to ensure. Defaults to `running`.
+* `uwsgi::service::enable` Start service at boot? Default to true.
+* `uwsgi::service::binary_directory` Aboslute path to uwsgi binary.
+* `uwsgi::service::kill_signal` Systemd specific: signal to use for termination of uWSGI.
 
 ## Contributers
 
@@ -275,6 +242,7 @@ https://guides.github.com/activities/contributing-to-open-source.
 
 **Release**  | **PR/Issue/commit**                                                                                               | **Contributer**
 -------------|-------------------------------------------------------------------------------------------------------------------|----------------------------------------
+2.0.0        | Refactor for Puppet 5, add RSpec and Beaker tests                                                                 | [@poikilotherm](https://github.com/poikilotherm)
 1.3.1        | [Add systemd support for Debian 8](https://github.com/rvdh/puppet-uwsgi/pull/16)                                  | [@rvdh](https://github.com/rvdh)
 1.3.0        | [Add systemd support](https://github.com/rvdh/puppet-uwsgi/pull/14)                                               | [@andy-s-clark](https://github.com/andy-s-clark)
 1.3.0        | [Make tyrant mode configurable](https://github.com/rvdh/puppet-uwsgi/pull/12)                                     | [@TravellingGuy](https://github.com/TravellingGuy)
