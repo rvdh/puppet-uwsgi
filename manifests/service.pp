@@ -13,6 +13,7 @@ class uwsgi::service (
   Optional[Stdlib::Absolutepath] $logfile = lookup('uwsgi::config::logfile'),
   Optional[Stdlib::Absolutepath] $pidfile = lookup('uwsgi::config::pidfile'),
   Optional[Stdlib::Absolutepath] $socket = lookup('uwsgi::config::socket'),
+  Optional[Stdlib::Absolutepath] $app_directory = lookup('uwsgi::config::app_directory'),
 ) {
   if $manage_file == true {
     $file_ensure = $ensure ? {

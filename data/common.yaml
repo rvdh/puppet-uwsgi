@@ -7,7 +7,7 @@ lookup_options:
     merge: unique
 
 ## uwsgi::service
-uwsgi::service::manage_file: true
+uwsgi::service::manage_file: false
 uwsgi::service::provider: systemd
 uwsgi::service::file: /etc/systemd/system/uwsgi.service
 uwsgi::service::file_mode: '0644'

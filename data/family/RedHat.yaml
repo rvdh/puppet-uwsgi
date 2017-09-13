@@ -1,6 +1,5 @@
 ---
 uwsgi::service::provider: systemd
-uwsgi::service::manage_file: false
 
 ## uwsgi::config
 # template

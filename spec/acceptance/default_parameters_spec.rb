@@ -3,7 +3,10 @@ require 'spec_helper_acceptance'
 describe 'uwsgi', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfamily')) do
   it 'installs with defaults' do
     pp = <<-EOS
-      $app = { 'testapp' => { 'uid' => '1000', 'gid' => '1000', 'application_options' => { 'http-socket' => ':9090' } } }
+      user { 'test':
+        uid => 10000,
+      }
+      $app = { 'testapp' => { 'uid' => '10000', 'gid' => '10000', 'application_options' => { 'http-socket' => ':9090' } } }
       class { '::uwsgi':
         app => $app,
       }

@@ -1,5 +1,6 @@
 ---
 uwsgi::service::provider: upstart
+uwsgi::service::manage_file: true
 uwsgi::service::file: /etc/init/uwsgi.conf
 uwsgi::service::file_mode: '0644'
 uwsgi::service::template: uwsgi/uwsgi_upstart.conf.erb
