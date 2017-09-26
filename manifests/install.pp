@@ -2,7 +2,8 @@
 class uwsgi::install (
   Optional[String[1]] $package_name,
   Optional[Enum['present','purged','absent']] $package_ensure,
-  Optional[String[1]] $package_provider,
+  Optional[Enum['pip','apt','yum']] $package_provider,
+  Optional[Array[String[1]]] $plugins = lookup('uwsgi::plugins'),
 ){
 
   # dependencies
@@ -40,4 +41,9 @@ class uwsgi::install (
     }
   }
   file { $app_directory: }
+
+  # if we don't install via pip, install plugins
+  if $package_provider != 'pip' {
+    ensure_packages($plugins, {'ensure' => $package_ensure, 'provider' => $package_provider})
+  }
 }

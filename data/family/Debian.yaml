@@ -1,4 +1,7 @@
 ---
+uwsgi::plugins:
+  - uwsgi-plugin-python
+
 uwsgi::service::provider: systemd
 # default on Debian 8 and Ubuntu 16.04 is an old init script - change to
 # use a native systemd unit file

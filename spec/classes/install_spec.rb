@@ -35,6 +35,10 @@ describe 'uwsgi::install' do
                   'provider' => 'apt',
                   'ensure' => 'present'
                 )
+                is_expected.to contain_package('uwsgi-plugin-python').with(
+                  'provider' => 'apt',
+                  'ensure' => 'present'
+                )
               end
               it { is_expected.to contain_file('/etc/uwsgi-emperor/vassals').with_ensure('directory') }
             end
@@ -49,6 +53,8 @@ describe 'uwsgi::install' do
               )
             end
             it { is_expected.to contain_package('uwsgi').with_provider('yum') }
+            it { is_expected.to contain_package('uwsgi-plugin-common').with_provider('yum') }
+            it { is_expected.to contain_package('uwsgi-plugin-python').with_provider('yum') }
             it { is_expected.to contain_file('/etc/uwsgi.d').with_ensure('directory') }
             it { is_expected.to contain_file('/var/run/uwsgi').with_ensure('directory') }
             case facts[:operatingsystemmajrelease]

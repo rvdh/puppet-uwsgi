@@ -100,6 +100,17 @@ each($app) |$name, $options| {
    operating system versions. Try your luck on other platforms...
 3. This module does not support Puppet 3 or Puppet < 4.7 and heavily relies on
    Hiera 5 data-in-modules. Please upgrade.
+4. Installation of uWSGI
+   * Except on Ubuntu 14.04 and Debian 7, uWSGI will be installed from package repos.
+     This enables you to install more options for uWSGI like special loggers or
+     language support.
+     *By default, this module will imitate the `pip` provider behaviour and*
+     *install Python support.*
+   * When you use the `pip` provider, be aware that your uWSGI installation
+     will **only** support Python. You can try to use the `gem` provider for Ruby /
+     Rack support, but this is neither tested nor supported. There is no support
+     for installing more modules via `uwsgiconfig.py`.
+     (Happy to accept a PR lifting these limits...!)
 
 ## Defined Types
 
@@ -169,8 +180,14 @@ depending on the service provider (RedHat init.d / UpStart / SystemD).
 #### Parameters
 
 * `app`
-   A hash of `uwsgi::app` resources to create for you. See above.
-   Default: `{}`
+  A hash of `uwsgi::app` resources to create for you. See above.  
+  Default: `{}`
+  Merge behaviour: `deep`
+* `plugins`
+  An array of package names to install when not using `pip` to install.
+  By default this will install Python support for uWSGI.
+  Default: depends on OS
+  Merge behaviour: `unique`
 
 ### Private subclasses
 
@@ -199,6 +216,7 @@ uwsgi::emperor_options:
 * `uwsgi::install::package_name` The package name to install.
 * `uwsgi::install::package_ensure` Package state. Cascades to config files.
 * `uwsgi::install::package_provider` The provider to use to install the package.
+* `uwsgi::install::plugins` Array of plugin package names, loads from `uwsgi::plugins` by default.
 
 #### Build and Runtime dependencies
 

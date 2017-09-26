@@ -17,8 +17,11 @@
 #
 class uwsgi (
   Optional[Hash[String[1],Any]] $app = {},
+  Optional[Array[String[1]]] $plugins = [],
 ) {
-  include ::uwsgi::install
+  class { '::uwsgi::install':
+    plugins => $plugins,
+  }
   include ::uwsgi::config
 
   # configure any applications retrieved from hiera / class param

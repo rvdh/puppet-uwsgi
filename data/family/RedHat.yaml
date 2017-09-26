@@ -1,4 +1,8 @@
 ---
+uwsgi::plugins:
+  - uwsgi-plugin-common
+  - uwsgi-plugin-python
+
 uwsgi::service::provider: systemd
 uwsgi::service::kill_signal: SIGINT
 

@@ -3,8 +3,13 @@
 lookup_options:
   uwsgi::app:
     merge: deep
+  uwsgi::plugins:
+    merge: unique
   uwsgi::packages::python_dev:
     merge: unique
+
+## uswgi
+uwsgi::plugins: []
 
 ## uwsgi::service
 uwsgi::service::manage_file: false
