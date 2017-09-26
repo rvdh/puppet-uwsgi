@@ -30,20 +30,21 @@
 # - Josh Smeaton <josh.smeaton@gmail.com>
 #
 define uwsgi::app (
-    $uid,
-    $gid,
-    $ensure                = 'present',
-    $template              = 'uwsgi/uwsgi_app.ini.erb',
-    $application_options   = undef,
-    $environment_variables = undef
+  Variant[Integer[0],String[1]] $uid,
+  Variant[Integer[0],String[1]] $gid,
+  Optional[Enum['present','absent']] $ensure = 'present',
+  Optional[String[1]] $template = 'uwsgi/uwsgi_app.ini.erb',
+  Optional[Hash[String[1],Scalar]] $application_options = {},
+  Optional[Hash[String[1],Scalar]] $environment_variables = {},
+  Optional[Stdlib::Absolutepath] $app_dir = lookup('uwsgi::config::app_directory')
 ) {
-
-    file { "${::uwsgi::app_directory}/${title}.ini":
-        ensure  => $ensure,
-        owner   => $uid,
-        group   => $gid,
-        mode    => '0644',
-        content => template($template),
-        require => Package[$::uwsgi::package_name]
-    }
+  include ::uwsgi
+  file { "${app_dir}/${title}.ini":
+    ensure  => $ensure,
+    owner   => $uid,
+    group   => $gid,
+    mode    => '0644',
+    content => template($template),
+    notify  => Service['uwsgi'],
+  }
 }

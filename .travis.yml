@@ -1,0 +1,74 @@
+---
+sudo: false
+dist: trusty
+language: ruby
+cache: bundler
+before_install:
+  - bundle -v
+  - rm Gemfile.lock || true
+  - gem update --system
+  - gem update bundler
+  - gem --version
+  - bundle -v
+script:
+  - 'bundle exec rake $CHECK'
+matrix:
+  fast_finish: true
+  include:
+  - rvm: 2.1.9
+    bundler_args: --without system_tests development
+    env: PUPPET_VERSION="~> 4.7" CHECK=test
+  - rvm: 2.2.7
+    bundler_args: --without system_tests development
+    env: PUPPET_VERSION="~> 4.7" CHECK=test
+  - rvm: 2.3.4
+    bundler_args: --without system_tests development
+    env: PUPPET_VERSION="~> 4.7" CHECK=test
+  - rvm: 2.4.1
+    bundler_args: --without system_tests development
+    env: PUPPET_VERSION="~> 5.0" CHECK=test
+  - rvm: 2.4.1
+    bundler_args: --without system_tests development
+    env: PUPPET_VERSION="~> 5.0" CHECK=rubocop
+  - rvm: 2.4.1
+    bundler_args: --without development
+    dist: trusty
+    env: CHECK=beaker BEAKER_set=docker/debian-7 BEAKER_debug=true PUPPET_VERSION="~> 5.0"
+    services: docker
+    sudo: required
+  - rvm: 2.4.1
+    bundler_args: --without development
+    dist: trusty
+    env: CHECK=beaker BEAKER_set=docker/debian-8 BEAKER_debug=true PUPPET_VERSION="~> 5.0"
+    services: docker
+    sudo: required
+  - rvm: 2.4.1
+    bundler_args: --without development
+    dist: trusty
+    env: CHECK=beaker BEAKER_set=docker/centos-6 BEAKER_debug=true PUPPET_VERSION="~> 5.0"
+    services: docker
+    sudo: required
+  - rvm: 2.4.1
+    bundler_args: --without development
+    dist: trusty
+    env: CHECK=beaker BEAKER_set=docker/centos-7 BEAKER_debug=true PUPPET_VERSION="~> 5.0"
+    services: docker
+    sudo: required
+  - rvm: 2.4.1
+    bundler_args: --without development
+    dist: trusty
+    env: CHECK=beaker BEAKER_set=docker/ubuntu-14.04 BEAKER_debug=true PUPPET_VERSION="~> 5.0"
+    services: docker
+    sudo: required
+  - rvm: 2.4.1
+    bundler_args: --without development
+    dist: trusty
+    env: CHECK=beaker BEAKER_set=docker/ubuntu-16.04 BEAKER_debug=true PUPPET_VERSION="~> 5.0"
+    services: docker
+    sudo: required
+branches:
+#  only:
+#  - master
+#  - /^v\d/
+notifications:
+  email: false

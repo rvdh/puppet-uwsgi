@@ -4,10 +4,10 @@
 /coverage/
 /InstalledFiles
 /pkg/
-/spec/reports/
 /test/tmp/
 /test/version_tmp/
 /tmp/
+.*.sw?
 
 ## Specific to RubyMotion:
 .dat*
@@ -19,6 +19,13 @@ build/
 /_yardoc/
 /doc/
 /rdoc/
+
+## spec testing
+/Gemfile.lock
+/spec/reports/
+/spec/fixtures/
+/junit
+/log
 
 ## Environment normalisation:
 /.bundle/

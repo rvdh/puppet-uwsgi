@@ -1,0 +1,16 @@
+---
+uwsgi::service::provider: debian
+uwsgi::service::manage_file: true
+uwsgi::service::file: /etc/init.d/uwsgi
+uwsgi::service::file_mode: '0755'
+uwsgi::service::template: uwsgi/uwsgi_service-debian7.erb
+
+# on Debian 7 there is no recent package of uWSGI, so install via pip
+uwsgi::install::package_provider: pip
+uwsgi::install::package_name: uwsgi
+uwsgi::packages::install_pip: true
+uwsgi::packages::install_python_dev: true
+uwsgi::service::binary_directory: /usr/local/bin
+
+uwsgi::config::configfile: /etc/uwsgi.ini
+uwsgi::config::app_directory: /etc/uwsgi/apps-enabled

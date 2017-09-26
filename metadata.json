@@ -1,17 +1,21 @@
 {
     "name": "vandenhof-uwsgi",
-    "version": "1.3.2",
+    "version": "2.0.0",
     "author": "Rick van den Hof <rick@vandenhof.eu>",
     "summary": "Install and configure uwsgi in Emperor mode",
     "license": "MIT",
     "source": "https://github.com/rvdh/puppet-uwsgi",
     "project_page": "https://github.com/rvdh/puppet-uwsgi",
     "issues_url": "https://github.com/rvdh/puppet-uwsgi/issues",
+    "requirements": [
+      {
+        "name": "puppet",
+        "version_requirement": ">= 4.7.0 < 6.0.0"
+      }
+    ],
     "dependencies": [
-	{
-	    "name": "puppetlabs-stdlib",
-	    "version_requirement": ">= 3.2.0 < 5.0.0"
-	}
+      {"name": "puppetlabs-stdlib", "version_requirement": ">= 4.13.0 < 5.0.0"},
+      {"name": "stahnma-epel","version_requirement":">= 1.2.2 < 2.0.0"}
     ],
     "operatingsystem_support": [
 	{
@@ -31,16 +35,14 @@
 	{
 	    "operatingsystem": "Debian",
 	    "operatingsystemrelease": [
-		"6",
 		"7",
-		"8"
+		"8",
+    "9"
 	    ]
 	},
 	{
 	    "operatingsystem": "Ubuntu",
 	    "operatingsystemrelease": [
-		"10.04",
-		"12.04",
 		"14.04",
 		"16.04"
 	    ]
